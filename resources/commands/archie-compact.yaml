@@ -1,0 +1,65 @@
+title: Compact
+description: Clean up resolved items and consolidate scattered knowledge to keep documentation lean
+tags: [cleanup, documentation, hygiene]
+category: Archie
+content: |
+  Clean up resolved items and consolidate scattered knowledge to keep documentation lean.
+
+  ## Purpose
+  Reduce document entropy by:
+  1) removing resolved items (safe cleanup), and  
+  2) consolidating knowledge from `faq.md` into canonical docs (`background.md` and `features/<feature-key>.md`) so that critical info is not scattered.
+
+  This command is **docs hygiene**. It must not change feature scope or invent requirements.
+
+  ---
+
+  ## Reads
+  - `background.md`
+  - `features/README.md`
+  - `features/<feature-key>.md`
+  - `faq.md`
+  - `blocker.md`
+
+  Optional:
+  - `dependency.md` (if FAQs contain dependency clarifications)
+  - `workflow/<feature-key>/*` (for terminology consistency)
+
+  ---
+
+  ## Writes
+
+  ### Always
+  - `background.md` (only if global info is consolidated)
+  - `features/<feature-key>.md` (only if feature-specific info is consolidated)
+  - `faq.md` (cleanup/compaction)
+  - `blocker.md` (cleanup of resolved items only)
+
+  ### Never
+  - Must not modify: `spec/*`, `api/*`, `storage.md`, `metrics.md`, `tasks.md`, `deployment.md`  
+    (Use `revise/design/spec/update-progress` instead.)
+
+  ---
+
+  ## Constraints (Hard Rules)
+
+  1. **No scope changes**
+     - This command must not add/remove requirements, AC, or alter feature intent.
+     - If a contradiction is found, create a new **Blocker** instead of rewriting scope.
+
+  2. **No invented facts**
+     - Only consolidate information that already exists in docs.
+     - If FAQ answer is ambiguous, keep it in FAQ and create a Blocker.
+
+  3. **Only remove resolved blockers**
+     - A blocker is removable only if it is checked: `- [x]`.
+     - Unchecked blockers must remain.
+
+  4. **Traceability**
+     - When moving info from FAQ into canonical docs, add a short note in changelog:
+       - where the info came from (FAQ question title)
+       - date/time
+
+  5. **Keep FAQ useful**
+     - Do not delete FAQ content that is still helpful as Q&A style.
+     - Prefer "promote" only stable conclusions into canonical docs.

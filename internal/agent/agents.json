@@ -1,0 +1,92 @@
+[
+  {
+    "name": "claude-code",
+    "background_doc": "CLAUDE.md",
+    "commands_dir": ".claude/commands",
+    "sub_agents_dir": ".claude/agents",
+    "official": true,
+    "file_format": "md",
+    "mapping": {
+      "content": "[CONTENT]",
+      "title": "title",
+      "description": "description",
+      "category": "category",
+      "tags": "tags"
+    }
+  },
+  {
+    "name": "antigravity",
+    "background_doc": "GEMINI.md",
+    "commands_dir": ".agent/workflows",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "md",
+    "mapping": {
+      "content": "[CONTENT]",
+      "title": "title",
+      "description": "description",
+      "category": "category",
+      "tags": "tags"
+    }
+  },
+  {
+    "name": "codex",
+    "background_doc": "AGENTS.md",
+    "commands_dir": ".codex/prompts",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "md",
+    "mapping": {
+      "content": "[CONTENT]"
+    }
+  },
+  {
+    "name": "cursor",
+    "background_doc": "AGENTS.md",
+    "commands_dir": ".cursor/commands",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "md",
+    "mapping": {
+      "description": "description",
+      "content": "[CONTENT]"
+    }
+  },
+  {
+    "name": "windsurf",
+    "background_doc": "AGENTS.md",
+    "commands_dir": ".windsurf/workflows",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "md",
+    "mapping": {
+      "description": "description",
+      "auto_execution_mode": "auto_execution_mode",
+      "content": "[CONTENT]"
+    }
+  },
+  {
+    "name": "gemini",
+    "background_doc": "GEMINI.md",
+    "commands_dir": ".gemini/commands",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "toml",
+    "mapping": {
+      "description": "description",
+      "content": "prompt"
+    }
+  },
+  {
+    "name": "qwen-code",
+    "background_doc": "QWEN.md",
+    "commands_dir": ".qwen/commands",
+    "sub_agents_dir": "",
+    "official": true,
+    "file_format": "toml",
+    "mapping": {
+      "description": "description",
+      "content": "prompt"
+    }
+  }
+]

@@ -1,0 +1,106 @@
+title: Init
+description: Initialize Archie project workspace and normalize existing documents
+tags: [initialize, setup, workspace]
+category: Archie
+content: |
+  Initialize Archie project workspace and normalize existing documents.
+
+  ## Purpose
+
+  Bootstrap an Archie project workspace.
+
+  `init` turns an empty (or partially populated, non-standard) folder into a **valid Archie docs workspace** by:
+  - normalizing any existing `background`/`features` content into Archie schemas,
+  - and producing a **Feature Registry** (at minimum: the set of feature keys).
+
+  `init` is the first command in the workflow.
+
+  ---
+
+  ## When to Use
+
+  - The folder has some docs, but not in Archie format.
+  - The user has background/feature notes (free-form) and wants Archie to structure them.
+
+  ---
+
+  ## Inputs
+
+  ### User Inputs (Interactive)
+
+  `init` must ask for missing information, but keep the interaction minimal.
+
+  Minimum required:
+  - Project name (optional but recommended)
+  - A list of features (names/keys) **or** enough background text for Archie to derive a feature list
+
+  Optional but strongly recommended:
+  - Timeline / milestones
+  - Tech stack
+  - Design hard rules (e.g., "Thrift only")
+  - Stakeholders / owners
+  - Any existing docs or links that should be referenced
+
+  ### Files (If Present)
+
+  `init` may read and reuse existing content from:
+  - `background.md` (if present)
+  - any existing feature notes (if present)
+  - any existing "requirements"/"prd"/"design" markdown files (if present)
+
+  ---
+
+  ## Outputs (Files Created/Updated)
+
+  `init` must ensure the workspace contains (at minimum):
+
+  ### Top-level
+  - `background.md`
+
+  ### Features
+  - `features/README.md`
+  - `features/<feature-key>.md` (one per feature)
+  ---
+
+  ## Behavior Requirements
+
+  ### 1) Create Missing Files (Non-destructive)
+  - If a required file does not exist, create it with the standard template.
+  - If a required directory does not exist, create it.
+
+  ### 2) Normalize Existing Content (Safe rewrite)
+  If a file exists but is non-standard:
+  - Preserve original content (copy into a "Legacy" section or a new `assets/refs/` file)
+  - Then rewrite the main file into the standard Archie template.
+
+  ### 3) Establish the Feature Set
+  At the end of `init`, Archie must know the feature set.
+
+  Sources of truth (in priority order):
+  1. User-provided explicit feature list
+  2. Existing docs that clearly enumerate features
+  3. Archie-derived list from background notes (must be confirmed with the user)
+
+  `init` must output:
+  - `features/README.md` registry containing all features
+  - `features/<feature-key>.md` for each feature (at least scaffolded)
+
+  ### 4) Assign Initial Status
+  For each feature created or normalized:
+  - Default to `NOT_REVIEWED`
+
+  ### 5) Correction Mode
+  If the user attempts other commands before a successful `init`:
+  - Archie must refuse and instruct the user to run `init` first.
+
+  ---
+
+  ## Success Criteria
+
+  `init` succeeds only if:
+  - All required files exist
+  - Feature registry exists and lists at least one feature (unless user explicitly says "no features yet")
+  - Each feature has a file scaffold
+  - No destructive loss of existing user content occurred (legacy preserved)
+
+  ---

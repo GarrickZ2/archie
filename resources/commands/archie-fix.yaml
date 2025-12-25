@@ -1,0 +1,21 @@
+title: Fix
+description: Fix document formatting or structure without semantic changes
+tags: [formatting, structure, cleanup]
+category: Archie
+content: |
+  Fix document formatting or structure without semantic changes.
+
+  ## Command: `fix <path> [feature-key]`
+
+  ### Purpose
+  Fix formatting/structure without semantic changes.
+
+  ### Allowed Status
+  - Any
+
+  ### Reads/Writes
+  - The target file only
+
+  ### Rules
+  - Do not change meaning.
+  - If semantic inconsistency is detected: record as FAQ/Blocker; do not "guess and rewrite".

@@ -1,0 +1,24 @@
+{
+  "files": [
+    "background.md",
+    "architecture.md",
+    "dependency.md",
+    "deployment.md",
+    "tasks.md",
+    "metrics.md",
+    "faq.md",
+    "blocker.md",
+    "storage.md"
+  ],
+  "directories": [
+    ".archie",
+    "api",
+    "workflow",
+    "spec",
+    "features",
+    "assets"
+  ],
+  "files_with_content": {
+    "features/README.md": ""
+  }
+}

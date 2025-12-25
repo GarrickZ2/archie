@@ -1,0 +1,60 @@
+title: Design
+description: Generate concrete technical design artifacts and update feature status
+tags: [design, architecture, artifacts]
+category: Archie
+content: |
+  Generate concrete technical design artifacts and update feature status.
+
+  ### Purpose
+  Produce concrete system design artifacts for the feature and link them from the feature doc.
+
+  ### Allowed Status
+  - `READY_FOR_DESIGN`, `UNDER_DESIGN`
+
+  ### Reads
+  - `background.md`
+  - `features/<feature-key>.md`
+  - `dependency.md`
+  - `api/api.md` and relevant `api/*.thrift` (if service exists)
+  - `storage.md`, `workflow/*`, `metrics.md`, `tasks.md` (for consistency)
+
+  ### Writes
+  - `api/api.md` (append change record and method summaries for impacted services)
+  - `api/<service>.thrift` (only if needed/allowed by background hard rules)
+  - `storage.md` (under the feature section)
+  - `workflow/<feature-key>/workflow.md`
+  - `workflow/<feature-key>/*.mmd`
+  - `metrics.md` (under the feature section)
+  - `tasks.md` (under the feature section)
+  - `features/<feature-key>.md` (design links + status + changelog)
+
+  ### Required Outputs
+  - API design recorded in `api/api.md` under the impacted service(s) with **Change Records**.
+  - Storage final schema + change plan recorded in `storage.md`.
+  - Workflow diagrams created (at least `main.mmd`) and indexed in `workflow/<feature-key>/workflow.md`.
+  - Metrics and Tasks created for the feature.
+  - Status transition:
+      - If any unchecked blocker exists → `BLOCKED`
+      - Else → `DESIGNED`
+
+  ### Subagent Invocation (Required)
+  - API Designer (if new/changed API/RPC)
+  - Storage Designer (if storage changes exist)
+  - Workflow Designer (always for non-trivial features)
+  - Metrics Designer (always)
+  - Task Manager (always)
+
+  ### Correction Behavior
+  - If feature status is `BLOCKED` or `NOT_REVIEWED`:
+      - Refuse `design`, instruct `review` first, and create blockers describing missing review artifacts.
+  - If hard rule conflicts are found:
+      - Create blockers and set feature to `BLOCKED`.
+
+  ### Prompt Skeleton (Orchestrator)
+  - Goal: produce complete design artifacts while respecting `background.md` hard rules.
+  - Steps:
+      1. Validate status and review completeness; refuse if not ready.
+      2. Identify required design slices: API, storage, workflow, metrics, tasks.
+      3. Call subagents per slice; each writes only within its scope.
+      4. Integrate outputs and ensure cross-links exist.
+      5. Update feature `Design Artifacts` links, status, and changelog.

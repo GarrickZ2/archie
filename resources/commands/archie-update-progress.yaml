@@ -1,0 +1,137 @@
+title: Update Progress
+description: Update feature implementation progress and execution tasks
+tags: [progress, implementation, execution]
+category: Archie
+content: |
+  Update feature implementation progress and execution tasks.
+
+  ## Purpose
+
+  Advance a feature from design into execution by updating:
+
+  1) **Feature progress (status)**  
+  2) **Execution plan (tasks + timeline estimate)**
+
+  This command bridges Archie (design-time) with real implementation work. It is **explicit**, driven by the user's note, and is intentionally simple (no heavy inference).
+
+  ---
+
+  ## Allowed Status Transitions (Only Forward)
+
+  - `DESIGNED` → `IMPLEMENTING`
+  - `SPEC_READY` → `IMPLEMENTING`
+  - `IMPLEMENTING` → `FINISHED`
+
+  Any other transition is **forbidden**.
+
+  ---
+
+  ## Reads
+
+  - `features/<feature-key>.md`
+  - `workflow/<feature-key>/*` (required for planning)
+  - `spec/<feature-key>.spec.md` (if present)
+  - `tasks.md`
+  - `deployment.md` (optional: only for warnings)
+
+  ---
+
+  ## Writes
+
+  - `features/<feature-key>.md`
+    - `Status` (Value / Last Updated / Reason)
+    - `Changelog` (append-only)
+  - `tasks.md`
+    - create/update tasks under the feature section
+    - update task checkboxes and logs (append-only)
+
+  ---
+
+  ## User Input (Required)
+
+  The user must provide a short note describing progress intent, e.g.:
+
+  - "Implementation started, core flow done, edge cases WIP"
+  - "All tasks completed, verified in prod"
+
+  This note is treated as **authoritative intent**, not evidence.
+
+  Optional additional inputs (recommended):
+  - desired timeframe (e.g., "finish in 2 weeks")
+  - number of engineers / owners
+  - constraints (holidays, oncall, code freeze)
+
+  ---
+
+  ## Behavior Rules
+
+  ### 1) No Backward Transitions
+  Archie must refuse any attempt to move status backward.
+
+  ### 2) Task Generation (Planning Mode)
+  If the feature is `DESIGNED` or `SPEC_READY` and tasks are missing or clearly incomplete, `update-progress` must generate an initial execution plan in `tasks.md`:
+
+  - Minimum output:
+    - Each task includes:
+      - checkbox status
+      - owner (may be placeholder)
+      - ETA (optional)
+      - dependencies (optional)
+      - description
+      - definition of done
+      - append-only log
+
+  ### 3) Timeline Estimate (Lightweight)
+  `update-progress` should produce a simple, lightweight timeline estimate inside `tasks.md` under the feature section:
+
+  - A `Timeline` subsection containing:
+    - overall estimate range (e.g., 3–5 days, 1–2 weeks)
+    - key milestones (design already done; implement; test; rollout)
+    - critical path dependencies (if any)
+    - risks (top 3)
+
+  No complex scheduling model is required. Use conservative ranges.
+
+  ### 4) Synchronize Task Status with Feature Status
+
+  - When moving to `IMPLEMENTING`:
+    - Mark the first wave of tasks as `DOING` (checkbox stays unchecked; add a log line)
+    - Keep remaining tasks as `TODO` (unchecked)
+  - When moving to `FINISHED`:
+    - Check for unfinished tasks:
+      - If unfinished tasks exist → warn the user
+      - If the user confirms (in-text) → proceed
+      - Otherwise → refuse and keep status `IMPLEMENTING`
+
+  ### 5) No Design Changes
+  This command must not modify:
+  - requirements/scope/AC
+  - workflow diagrams
+  - API/IDL
+  - storage schema
+  - spec content
+
+  If execution planning reveals missing design details:
+  - create a Blocker (or request to run `revise/design/spec`)
+  - do not silently patch design docs
+
+  ### 6) Auditability
+  Feature changelog must record:
+  - previous status → new status
+  - user note
+  - date/time
+
+  Tasks must record:
+  - task creation
+  - task status shifts
+  - assumptions used for timeline estimate
+
+  ---
+
+  ## Success Criteria
+
+  `update-progress` succeeds only if:
+  - the transition is valid
+  - feature status and changelog are updated
+  - tasks exist and are actionable (or a clear rationale is written)
+  - a lightweight timeline estimate exists in `tasks.md`

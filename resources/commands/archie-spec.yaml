@@ -1,0 +1,44 @@
+title: Spec
+description: Generate execution-ready coding specifications from design artifacts
+tags: [specification, coding, execution]
+category: Archie
+content: |
+  Generate execution-ready coding specifications from design artifacts.
+
+  ### Purpose
+  Generate a Coding Spec for implementation (agent-friendly, execution-focused).
+
+  ### Allowed Status
+  - `DESIGNED`
+
+  ### Reads
+  - `features/<feature-key>.md`
+  - `api/api.md` + relevant `api/*.thrift`
+  - `workflow/<feature-key>/*`
+  - `storage.md`
+  - `metrics.md`
+  - `tasks.md`
+  - `blocker.md`, `faq.md`
+
+  ### Writes
+  - `spec/<feature-key>.spec.md`
+  - `features/<feature-key>.md` (Spec section + status + changelog)
+
+  ### Required Outputs
+  - Spec contains: interfaces, data model, workflow, edge cases, observability, rollout, test plan.
+  - `features/<feature-key>.md`:
+      - `Spec.Location` points to the spec file
+      - `Spec.Readiness` set to `READY`
+      - Status set to `SPEC_READY`
+
+  ### Correction Behavior
+  If any design artifact is missing (API/storage/workflow/metrics/tasks):
+  - Refuse to mark READY; create blockers listing missing artifacts; set status to `UNDER_DESIGN` or `BLOCKED`.
+
+  ### Prompt Skeleton (Orchestrator)
+  - Goal: consolidate design outputs into an executable spec.
+  - Steps:
+      1. Validate design completeness.
+      2. Derive spec sections deterministically from artifacts.
+      3. Record assumptions and explicit non-goals.
+      4. Write spec file; update feature spec link/readiness/status.
