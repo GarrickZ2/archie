@@ -1,5 +1,3 @@
-# AGENTS.md
-
 ## What Is Archie
 
 Archie is a **Docs-as-Source-of-Truth AI design and project orchestration CLI**.

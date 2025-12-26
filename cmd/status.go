@@ -15,16 +15,25 @@ var (
 )
 
 var statusCmd = &cobra.Command{
-	Use:   "status",
+	Use:   "status [feature-key]",
 	Short: "Show project status and progress",
 	Long: `Display a comprehensive status report for all features in the project.
 
 This command:
+- Without arguments: Shows overall project status with all features
+- With feature-key: Shows detailed information for a specific feature
+
+Overall report:
 - Parses all feature files in the features/ directory
 - Extracts status information from each feature
 - Shows overall progress, status distribution, and key insights
 - Highlights blocked features that need attention
 - Identifies stale features that haven't been updated recently
+
+Detailed feature view:
+- Shows complete feature information in a structured TUI format
+- Displays status, summary, scope, requirements, dependencies, and more
+- Provides a comprehensive view of a single feature
 
 Statuses tracked:
   NOT_REVIEWED → UNDER_REVIEW → READY_FOR_DESIGN → UNDER_DESIGN →
@@ -32,7 +41,7 @@ Statuses tracked:
 
 Special status:
   BLOCKED - Features that are blocked and need attention`,
-	Args: cobra.NoArgs,
+	Args: cobra.MaximumNArgs(1),
 	RunE: runStatus,
 }
 
@@ -49,6 +58,33 @@ func runStatus(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get current directory: %w", err)
 	}
 
+	// If a feature key is provided, show detailed view for that feature
+	if len(args) == 1 {
+		return showFeatureDetail(projectPath, args[0])
+	}
+
+	// Otherwise, show overall status report
+	return showOverallStatus(projectPath)
+}
+
+// showFeatureDetail 显示单个 feature 的详细信息
+func showFeatureDetail(projectPath, featureKey string) error {
+	detailParser := status.NewDetailParser(nil)
+	detail, err := detailParser.ParseFeatureDetail(projectPath, featureKey)
+	if err != nil {
+		ui.ShowError(fmt.Sprintf("Failed to parse feature: %v", err))
+		return fmt.Errorf("failed to parse feature: %w", err)
+	}
+
+	// Display detailed feature information
+	display := status.NewDetailDisplay(detail)
+	display.Show()
+
+	return nil
+}
+
+// showOverallStatus 显示整体状态报告
+func showOverallStatus(projectPath string) error {
 	// Parse all features
 	parser := status.NewParser(nil)
 	features, err := parser.ParseFeaturesDir(projectPath)

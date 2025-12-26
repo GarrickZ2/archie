@@ -103,18 +103,27 @@ content: |
   **Steps:**
 
   1. Load `background.md` hard rules; reject conflicting requirements.
-  2. Parse feature document; identify missing or ambiguous sections.
-  3. **Dependency discovery phase**
-    - Extract upstreams / downstreams.
-    - Validate each dependency against `dependency.md`.
-    - Create catalog stubs for missing dependencies.
-  4. Ask the **minimum** set of questions required, prioritizing:
-    - dependency unknowns (owner / interface / constraints)
-    - acceptance criteria ambiguity
-  5. Write answered questions to `faq.md` (append-only).
-  6. Write unresolved items to `blocker.md` with checkboxes and next steps.
-  7. Update feature document:
-    - Requirements
-    - Acceptance Criteria
-    - **Dependencies section**
-    - Status and Changelog.
+  2. **Feature selection phase**
+     - If user provided `<feature-key>` → use it directly.
+     - If no feature-key provided:
+       - Read `features/README.md` to understand available features and their dependencies.
+       - Recommend the **most ready-to-review** feature based on:
+         - Status is `NOT_REVIEWED` or `UNDER_REVIEW`
+         - Has clear dependencies (or minimal dependencies)
+         - Not blocked by other features
+       - Present the recommendation to user and ask for confirmation.
+  3. Parse feature document; identify missing or ambiguous sections.
+  4. **Dependency discovery phase**
+     - Extract upstreams / downstreams.
+     - Validate each dependency against `dependency.md`.
+     - Create catalog stubs for missing dependencies.
+  5. Ask the **minimum** set of questions required, prioritizing:
+     - dependency unknowns (owner / interface / constraints)
+     - acceptance criteria ambiguity
+  6. Write answered questions to `faq.md` (append-only).
+  7. Write unresolved items to `blocker.md` with checkboxes and next steps.
+  8. Update feature document:
+     - Requirements
+     - Acceptance Criteria
+     - **Dependencies section**
+     - Status and Changelog.
