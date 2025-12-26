@@ -12,7 +12,7 @@ import (
 // CustomAgentConfig 自定义 agent 的配置
 type CustomAgentConfig struct {
 	Name         string            `json:"name"`
-	AgentDoc     string            `json:"agent_doc"`
+	AgentDoc     string            `json:"background_doc"`
 	CommandsDir  string            `json:"commands_dir"`
 	SubAgentsDir string            `json:"sub_agents_dir"`
 	Official     bool              `json:"official"` // 是否为官方 agent

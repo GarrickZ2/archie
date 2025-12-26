@@ -2,25 +2,19 @@
 
 ## Purpose
 
-- What problem this project solves
-- Who it is for
-- Why it exists (business / product / technical motivation)
-
-> This section defines *why* the system exists.
-> All feature designs must align with this purpose.
+[What problem this project solves ; Who it is for ;Why it exists (business / product / technical motivation)]
 
 ---
 
 ## Success Criteria
 
-- What does “success” look like?
-- Measurable outcomes (performance, reliability, adoption, etc.)
+[What does “success” look like? ;Measurable outcomes (performance, reliability, adoption, etc.)]
 
 ---
 
 ## Tech Stack
 
-This section defines **allowed and preferred technologies**.
+[This section defines **allowed and preferred technologies**.]
 
 - Language / Runtime:
 - Frameworks:
@@ -33,10 +27,7 @@ This section defines **allowed and preferred technologies**.
 
 ---
 
-## Project Conventions (Hard Rules)
-
-> These are **non-negotiable constraints**.
-> If a feature design violates any rule here, the agent must raise a Blocker.
+## Project Conventions
 
 ### Code Style
 
@@ -76,7 +67,7 @@ This section defines **allowed and preferred technologies**.
 
 ## Domain Context
 
-Domain-specific knowledge that **cannot be inferred from code alone**.
+[Domain-specific knowledge that **cannot be inferred from code alone**.]
 
 Include:
 
@@ -85,8 +76,6 @@ Include:
 - Invariants and rules
 - Common edge cases
 - Known pitfalls
-
-> Agents should rely on this section to understand *what is normal* and *what is dangerous* in the domain.
 
 ---
 
@@ -112,27 +101,9 @@ Include:
 
 ---
 
-## External Dependencies
-
-### Upstream Systems
-
-- Name:
-- Owner / Team:
-- What it provides:
-- Stability / SLA:
-- Known issues:
-
-### Downstream Systems
-
-- Name:
-- How they consume this system:
-- Compatibility requirements:
-
----
-
 ## Assumptions
 
-Explicit assumptions made during design.
+[Explicit assumptions made during design.]
 
 <!-- ARCHIE:APPEND_ONLY -->
 
@@ -144,7 +115,7 @@ Explicit assumptions made during design.
 
 ## Open Questions
 
-Unresolved global questions that affect multiple features.
+[Unresolved global questions that affect multiple features.]
 
 <!-- ARCHIE:APPEND_ONLY -->
 
