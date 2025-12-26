@@ -1,88 +1,81 @@
 # Spec: <feature-key>
 
 ## Goal
-- What this spec enables:
+[What this spec enables]
 
 ## Non-Goals
-- Explicitly not covered:
+[Explicitly not covered]
 
 ## Background
-- Short context from feature/background.md
-- Assumptions:
+[Short context from feature/background.md]
 
 ## Interfaces
 
 ### API / RPC
-- IDL location:
+- IDL location: [ ]
 - Methods:
-    - <method>:
-        - Request:
-        - Response:
-        - Errors:
+  - <method>:
+    - Request: [ ]
+    - Response: [ ]
+    - Errors: [ ]
 
-### Events / Async (if any)
-- Topic / stream:
-- Payload:
-- Ordering / retry:
+### Events / Async
+- Topic / stream: [ ]
+- Payload: [ ]
+- Ordering / retry: [ ]
 
 ## Data Model
 
 ### Entities
 - <entity>:
-    - Fields:
-    - Constraints:
-    - Lifecycle:
+  - Fields: [ ]
+  - Constraints: [ ]
+  - Lifecycle: [ ]
 
 ### Storage
-- Tables / collections:
-- Indexes:
-- Migration plan:
+- Tables / collections: [ ]
+- Indexes: [ ]
+- Migration plan: [ ]
 
 ## Workflow
 
 ### Main Flow
-- Step 1:
-- Step 2:
+- [ ]
 
 ### Edge Cases
-- Case:
-- Handling:
+- Case: [ ]
+- Handling: [ ]
 
 ### Failure & Retry
-- Idempotency strategy:
-- Retry policy:
-- Timeout / circuit breaker:
+- Idempotency strategy: [ ]
+- Retry policy: [ ]
+- Timeout / circuit breaker: [ ]
 
 ## Observability
 
 ### Metrics
-- <metric-name>: description
+- <metric-name>: [description]
 
 ### Logs
-- Key logs:
+- Key logs: [ ]
 
 ### Traces
-- Trace boundaries:
+- Trace boundaries: [ ]
 
 ## Security & Compliance
-- AuthN/AuthZ:
-- Data sensitivity:
-- Audit needs:
+- AuthN/AuthZ: [ ]
+- Data sensitivity: [ ]
+- Audit needs: [ ]
 
 ## Rollout Plan
-- Feature flag:
-- Canary:
-- Rollback:
+- Feature flag: [ ]
+- Canary: [ ]
+- Rollback: [ ]
 
 ## Test Plan
-- Unit tests:
-- Integration tests:
-- Load tests:
-- Manual verification:
-
-## Open Questions
-- Q1:
-- Q2:
+- Unit tests: [ ]
+- Integration tests: [ ]
+- Load tests: [ ]
 
 ## Changelog
 - YYYY-MM-DD (who): created

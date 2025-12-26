@@ -3,8 +3,6 @@ description: Generate concrete technical design artifacts and update feature sta
 tags: [design, architecture, artifacts]
 category: Archie
 content: |
-  Generate concrete technical design artifacts and update feature status.
-
   ### Purpose
   Produce concrete system design artifacts for the feature and link them from the feature doc.
 

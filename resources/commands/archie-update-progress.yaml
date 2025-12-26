@@ -3,16 +3,12 @@ description: Update feature implementation progress and execution tasks
 tags: [progress, implementation, execution]
 category: Archie
 content: |
-  Update feature implementation progress and execution tasks.
-
   ## Purpose
-
   Advance a feature from design into execution by updating:
+  1. **Feature progress (status)**
+  2. **Execution plan (tasks + timeline estimate)**
 
-  1) **Feature progress (status)**  
-  2) **Execution plan (tasks + timeline estimate)**
-
-  This command bridges Archie (design-time) with real implementation work. It is **explicit**, driven by the user's note, and is intentionally simple (no heavy inference).
+  This command bridges Archie (design-time) with real implementation work. It is explicit, driven by the user's note, and intentionally simple (no heavy inference).
 
   ---
 
@@ -38,19 +34,14 @@ content: |
 
   ## Writes
 
-  - `features/<feature-key>.md`
-    - `Status` (Value / Last Updated / Reason)
-    - `Changelog` (append-only)
-  - `tasks.md`
-    - create/update tasks under the feature section
-    - update task checkboxes and logs (append-only)
+  - `features/<feature-key>.md` - Status (Value / Last Updated / Reason), Changelog (append-only)
+  - `tasks.md` - create/update tasks under feature section, update checkboxes and logs (append-only)
 
   ---
 
   ## User Input (Required)
 
   The user must provide a short note describing progress intent, e.g.:
-
   - "Implementation started, core flow done, edge cases WIP"
   - "All tasks completed, verified in prod"
 
@@ -65,66 +56,24 @@ content: |
 
   ## Behavior Rules
 
-  ### 1) No Backward Transitions
-  Archie must refuse any attempt to move status backward.
+  1. **No Backward Transitions** - Archie must refuse any attempt to move status backward.
 
-  ### 2) Task Generation (Planning Mode)
-  If the feature is `DESIGNED` or `SPEC_READY` and tasks are missing or clearly incomplete, `update-progress` must generate an initial execution plan in `tasks.md`:
+  2. **Task Generation (Planning Mode)** - If feature is `DESIGNED` or `SPEC_READY` and tasks are missing/incomplete, generate initial execution plan in `tasks.md`:
+     - Each task includes: checkbox status, owner (placeholder ok), ETA (optional), dependencies (optional), description, definition of done, append-only log
 
-  - Minimum output:
-    - Each task includes:
-      - checkbox status
-      - owner (may be placeholder)
-      - ETA (optional)
-      - dependencies (optional)
-      - description
-      - definition of done
-      - append-only log
+  3. **Timeline Estimate (Lightweight)** - Produce simple timeline estimate in `tasks.md` under feature section:
+     - overall estimate range (e.g., 3-5 days, 1-2 weeks)
+     - key milestones (design done; implement; test; rollout)
+     - critical path dependencies (if any)
+     - risks (top 3)
 
-  ### 3) Timeline Estimate (Lightweight)
-  `update-progress` should produce a simple, lightweight timeline estimate inside `tasks.md` under the feature section:
+  4. **Synchronize Task Status with Feature Status**
+     - When moving to `IMPLEMENTING`: Mark first wave of tasks as `DOING` (add log line), keep remaining as `TODO`
+     - When moving to `FINISHED`: Check for unfinished tasks. If exist → warn user. If user confirms → proceed, else refuse.
 
-  - A `Timeline` subsection containing:
-    - overall estimate range (e.g., 3–5 days, 1–2 weeks)
-    - key milestones (design already done; implement; test; rollout)
-    - critical path dependencies (if any)
-    - risks (top 3)
+  5. **No Design Changes** - Must not modify: requirements/scope/AC, workflow diagrams, API/IDL, storage schema, spec content. If planning reveals missing design details: create Blocker or request `revise/design/spec`.
 
-  No complex scheduling model is required. Use conservative ranges.
-
-  ### 4) Synchronize Task Status with Feature Status
-
-  - When moving to `IMPLEMENTING`:
-    - Mark the first wave of tasks as `DOING` (checkbox stays unchecked; add a log line)
-    - Keep remaining tasks as `TODO` (unchecked)
-  - When moving to `FINISHED`:
-    - Check for unfinished tasks:
-      - If unfinished tasks exist → warn the user
-      - If the user confirms (in-text) → proceed
-      - Otherwise → refuse and keep status `IMPLEMENTING`
-
-  ### 5) No Design Changes
-  This command must not modify:
-  - requirements/scope/AC
-  - workflow diagrams
-  - API/IDL
-  - storage schema
-  - spec content
-
-  If execution planning reveals missing design details:
-  - create a Blocker (or request to run `revise/design/spec`)
-  - do not silently patch design docs
-
-  ### 6) Auditability
-  Feature changelog must record:
-  - previous status → new status
-  - user note
-  - date/time
-
-  Tasks must record:
-  - task creation
-  - task status shifts
-  - assumptions used for timeline estimate
+  6. **Auditability** - Feature changelog must record: previous status → new status, user note, date/time. Tasks must record: creation, status shifts, timeline estimate assumptions.
 
   ---
 
@@ -133,5 +82,7 @@ content: |
   `update-progress` succeeds only if:
   - the transition is valid
   - feature status and changelog are updated
-  - tasks exist and are actionable (or a clear rationale is written)
+  - tasks exist and are actionable (or clear rationale written)
   - a lightweight timeline estimate exists in `tasks.md`
+
+  ---

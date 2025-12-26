@@ -2,60 +2,56 @@
 
 ## Status
 - Value: NOT_REVIEWED
-- Owner:
+- Owner: [ ]
 - Last Updated: YYYY-MM-DD
-- Reason: (optional, why in this status)
+- Reason: [ ]
 
 ## Summary
-- One-liner:
-- Background / Motivation:
-- User story / Use case:
+- One-liner: [ ]
+- Background / Motivation: [ ]
+- User story / Use case: [ ]
 
 ## Scope
 ### In Scope
-- ...
+- [ ]
 
 ### Out of Scope
-- ...
+- [ ]
 
 ## Requirements
-- R1:
-- R2:
+- R1: [ ]
+- R2: [ ]
 
 ## Non-Requirements
-- NR1:
-- NR2:
+- NR1: [ ]
+- NR2: [ ]
 
 ## Dependencies
-- Upstreams:
-  - <dependency-name>: reason
-- Downstreams:
-  - <dependency-name>: reason
+- Upstreams: [ ]
+- Downstreams: [ ]
 
 ## Acceptance Criteria
-- AC1:
-- AC2:
+- AC1: [ ]
+- AC2: [ ]
 
 ## Design Constraints
-(from background.md hard rules that matter here)
-- ...
+[From background.md hard rules]
 
 ## Design Artifacts
-- API: api/api.md#<feature-key>
-- Storage: storage/storage.md#<feature-key>
-- Workflow: workflow/workflow.md#<feature-key>
-- Metrics: metrics.md#<feature-key>
-- Tasks: tasks.md#<feature-key>
+- API: [api/api.md#<feature-key>]
+- Storage: [storage/storage.md#<feature-key>]
+- Workflow: [workflow/workflow.md#<feature-key>]
+- Metrics: [metrics.md#<feature-key>]
+- Tasks: [tasks.md#<feature-key>]
 
 ## Spec
 - Location: spec/<feature-key>.spec.md
 - Readiness: NONE | DRAFT | READY
 
 ## Related Records
-- FAQ: faq.md#<feature-key>
-- Blockers: blocker.md#<feature-key>
+- FAQ: [faq.md#<feature-key>]
+- Blockers: [blocker.md#<feature-key>]
 
 ## Changelog
 - YYYY-MM-DD (who): created
-- YYYY-MM-DD (who): revised <what/why>
-- YYYY-MM-DD (who): status changed <from> -> <to> (reason)
+- YYYY-MM-DD (who): revised [what/why]

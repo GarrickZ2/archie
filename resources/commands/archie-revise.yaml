@@ -3,8 +3,6 @@ description: Modify requirements or design while keeping history traceable
 tags: [revise, modify, requirements]
 category: Archie
 content: |
-  Modify requirements or design while keeping history traceable.
-
   ### Purpose
   Modify requirements and/or design. Keep history traceable.
 

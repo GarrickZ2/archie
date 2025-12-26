@@ -100,3 +100,29 @@ A feature is considered successfully handled by Archie if:
 - A workflow exists and is linked from the feature
 - A complete Coding Spec is produced
 - Key decisions can be audited via files
+
+---
+
+## Command Common Rules
+
+All Archie commands must follow these common rules:
+
+### Core Principles Reference
+All commands must follow the Core Principles defined above.
+
+### State Machine Reference
+All commands must respect the Feature State Model defined above.
+
+### File Contract Reference
+All commands must strictly respect file boundaries (see .archie/docs/schema.md).
+
+### Hard Constraints Checklist
+Commands must enforce:
+- [ ] Review must precede design
+- [ ] Design must precede spec
+- [ ] No command may succeed without file output
+- [ ] No silent state changes are allowed
+- [ ] If any unchecked blocker exists → status must be BLOCKED
+
+### Format Compliance
+All file operations must strictly follow the format rules defined in .archie/docs/schema.md

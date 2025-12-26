@@ -3,8 +3,6 @@ description: Clarify requirements and dependencies to complete the feature revie
 tags: [review, requirements, dependencies]
 category: Archie
 content: |
-  Clarify requirements and dependencies to complete the feature review.
-
   ## Purpose
   Clarify requirements and dependencies, eliminate ambiguity. Produce a review-complete feature document and either unblock it or explicitly block it with tracked blockers.
 
@@ -39,25 +37,10 @@ content: |
 
   ## Required Outputs
 
-  - `features/<feature-key>.md` must contain complete:
-    - Summary
-    - Scope
-    - Requirements
-    - Dependencies 
-    - Acceptance Criteria
-
-  - Dependencies must be:
-    - explicitly named
-    - validated against `dependency.md`
-    - annotated with interaction type (API / Event / Data)
-
-  - All uncertainties must be recorded in:
-    - `faq.md` (answered questions)
-    - `blocker.md` (unresolved issues)
-
-  - Status transition:
-    - If any unchecked blocker exists → `BLOCKED`
-    - Else → `READY_FOR_DESIGN`
+  - `features/<feature-key>.md` must contain complete: Summary, Scope, Requirements, Dependencies, Acceptance Criteria
+  - Dependencies must be: explicitly named, validated against `dependency.md`, annotated with interaction type
+  - All uncertainties must be recorded in: `faq.md` (answered questions), `blocker.md` (unresolved issues)
+  - Status transition: any unchecked blocker → `BLOCKED`, else → `READY_FOR_DESIGN`
 
   ---
 
@@ -65,32 +48,16 @@ content: |
 
   During review, the agent **must**:
 
-  1. **Discover dependencies**
-    - Infer upstreams and downstreams from feature description and requirements.
-    - No feature may have an empty Dependencies section unless explicitly justified.
-
-  2. **Validate against `dependency.md`**
-    - If dependency exists → reference it by name.
-    - If dependency does not exist → create a **minimal stub** entry in `dependency.md`
-      (name, type, TODO fields clearly marked).
-
-  3. **Clarify critical dependency attributes**
-     For each dependency, determine whether the following are known:
-    - owner / team
-    - interface type
-    - stability / SLA expectations
-    - constraints impacting this feature
-
-  4. **Block if unclear**
-    - If any required dependency attribute is unknown and blocks design,
-      create a blocker and keep feature status `BLOCKED`.
+  1. **Discover dependencies** - Infer upstreams/downstreams. No feature may have empty Dependencies section unless justified.
+  2. **Validate against `dependency.md`** - Reference existing dependencies by name. Create minimal stubs for missing ones.
+  3. **Clarify critical attributes** - Determine owner/team, interface type, stability/SLA, constraints for each dependency.
+  4. **Block if unclear** - If any required dependency attribute is unknown and blocks design, create blocker and keep status `BLOCKED`.
 
   ---
 
   ## Correction Behavior
 
   If the feature file does not exist:
-
   - Refuse `review`
   - Instruct the user to create the feature via `init` (or `revise` to scaffold) first.
 
@@ -98,32 +65,15 @@ content: |
 
   ## Prompt Skeleton (Orchestrator)
 
-  **Goal:** make the feature *review-complete*, including dependency clarity, with minimal user Q&A.
+  **Goal:** Make the feature *review-complete* with dependency clarity and minimal user Q&A.
 
   **Steps:**
 
   1. Load `background.md` hard rules; reject conflicting requirements.
-  2. **Feature selection phase**
-     - If user provided `<feature-key>` → use it directly.
-     - If no feature-key provided:
-       - Read `features/README.md` to understand available features and their dependencies.
-       - Recommend the **most ready-to-review** feature based on:
-         - Status is `NOT_REVIEWED` or `UNDER_REVIEW`
-         - Has clear dependencies (or minimal dependencies)
-         - Not blocked by other features
-       - Present the recommendation to user and ask for confirmation.
+  2. **Feature selection phase** - If no feature-key provided: read `features/README.md` and recommend the most ready-to-review feature based on status, dependencies, and blockers.
   3. Parse feature document; identify missing or ambiguous sections.
-  4. **Dependency discovery phase**
-     - Extract upstreams / downstreams.
-     - Validate each dependency against `dependency.md`.
-     - Create catalog stubs for missing dependencies.
-  5. Ask the **minimum** set of questions required, prioritizing:
-     - dependency unknowns (owner / interface / constraints)
-     - acceptance criteria ambiguity
+  4. **Dependency discovery phase** - Extract upstreams/downstreams, validate against `dependency.md`, create stubs for missing dependencies.
+  5. Ask the **minimum** questions required (dependency unknowns, acceptance criteria ambiguity).
   6. Write answered questions to `faq.md` (append-only).
   7. Write unresolved items to `blocker.md` with checkboxes and next steps.
-  8. Update feature document:
-     - Requirements
-     - Acceptance Criteria
-     - **Dependencies section**
-     - Status and Changelog.
+  8. Update feature document: Requirements, Acceptance Criteria, Dependencies section, Status and Changelog.

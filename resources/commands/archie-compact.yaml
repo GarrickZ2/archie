@@ -3,8 +3,6 @@ description: Clean up resolved items and consolidate scattered knowledge to keep
 tags: [cleanup, documentation, hygiene]
 category: Archie
 content: |
-  Clean up resolved items and consolidate scattered knowledge to keep documentation lean.
-
   ## Purpose
   Reduce document entropy by:
   1) removing resolved items (safe cleanup), and  

@@ -3,8 +3,6 @@ description: Generate execution-ready coding specifications from design artifact
 tags: [specification, coding, execution]
 category: Archie
 content: |
-  Generate execution-ready coding specifications from design artifacts.
-
   ### Purpose
   Generate a Coding Spec for implementation (agent-friendly, execution-focused).
 
