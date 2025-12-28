@@ -6,19 +6,9 @@ import "time"
 type DocumentType string
 
 const (
-	DocTypeBackground  DocumentType = "background"
-	DocTypeDependency  DocumentType = "dependency"
-	DocTypeDeployment  DocumentType = "deployment"
-	DocTypeMetrics     DocumentType = "metrics"
-	DocTypeStorage     DocumentType = "storage"
-	DocTypeTasks       DocumentType = "tasks"
-	DocTypeAPI         DocumentType = "api"
-	DocTypeFAQ         DocumentType = "faq"
-	DocTypeBlocker     DocumentType = "blocker"
-	DocTypeArchitecture DocumentType = "architecture"
-	DocTypeFeature     DocumentType = "feature"
-	DocTypeWorkflow    DocumentType = "workflow"
-	DocTypeSpec        DocumentType = "spec"
+	DocTypeFeature  DocumentType = "feature"
+	DocTypeWorkflow DocumentType = "workflow"
+	DocTypeSpec     DocumentType = "spec"
 )
 
 // ExportConfig defines what to export
