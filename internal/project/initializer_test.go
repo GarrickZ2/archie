@@ -36,7 +36,6 @@ func TestInitializer_Initialize_NewDirectory(t *testing.T) {
 		"/test/project/deployment.md",
 		"/test/project/dependency.md",
 		"/test/project/blocker.md",
-		"/test/project/faq.md",
 	}
 
 	for _, path := range tests {

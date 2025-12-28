@@ -56,7 +56,6 @@ type FeatureDetail struct {
 	SpecReadiness string
 
 	// Related Records
-	FAQ      string
 	Blockers string
 
 	// Changelog
@@ -265,9 +264,7 @@ func (p *DetailParser) parseSpecSection(detail *FeatureDetail, line string) {
 
 // parseRelatedRecords 解析 Related Records section
 func (p *DetailParser) parseRelatedRecords(detail *FeatureDetail, line string) {
-	if strings.HasPrefix(line, "- FAQ:") {
-		detail.FAQ = strings.TrimSpace(strings.TrimPrefix(line, "- FAQ:"))
-	} else if strings.HasPrefix(line, "- Blockers:") {
+	if strings.HasPrefix(line, "- Blockers:") {
 		detail.Blockers = strings.TrimSpace(strings.TrimPrefix(line, "- Blockers:"))
 	}
 }
@@ -331,7 +328,7 @@ func (d *DetailDisplay) Show() {
 		d.showSpec()
 	}
 
-	if d.detail.FAQ != "" || d.detail.Blockers != "" {
+	if d.detail.Blockers != "" {
 		fmt.Println()
 		d.showRelatedRecords()
 	}
@@ -589,10 +586,6 @@ func (d *DetailDisplay) showSpec() {
 func (d *DetailDisplay) showRelatedRecords() {
 	fmt.Println(ColorBold + "  📚 Related Records" + ColorReset)
 	fmt.Println()
-
-	if d.detail.FAQ != "" && !strings.Contains(d.detail.FAQ, "<feature-key>") {
-		fmt.Printf("  %s%-15s%s %s\n", ColorDim, "FAQ:", ColorReset, d.detail.FAQ)
-	}
 
 	if d.detail.Blockers != "" && !strings.Contains(d.detail.Blockers, "<feature-key>") {
 		fmt.Printf("  %s%-15s%s %s\n", ColorDim, "Blockers:", ColorReset, d.detail.Blockers)

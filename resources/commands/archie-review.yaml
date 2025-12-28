@@ -21,7 +21,6 @@ content: |
   - `background.md`
   - `features/<feature-key>.md`
   - `dependency.md`
-  - `faq.md`
   - `blocker.md`
 
   ---
@@ -29,7 +28,6 @@ content: |
   ## Writes
 
   - `features/<feature-key>.md`
-  - `faq.md`
   - `blocker.md`
   - `dependency.md`
 
@@ -39,7 +37,7 @@ content: |
 
   - `features/<feature-key>.md` must contain complete: Summary, Scope, Requirements, Dependencies, Acceptance Criteria
   - Dependencies must be: explicitly named, validated against `dependency.md`, annotated with interaction type
-  - All uncertainties must be recorded in: `faq.md` (answered questions), `blocker.md` (unresolved issues)
+  - All uncertainties must be recorded in `blocker.md` (unresolved issues)
   - Status transition: any unchecked blocker → `BLOCKED`, else → `READY_FOR_DESIGN`
 
   ---
@@ -74,6 +72,5 @@ content: |
   3. Parse feature document; identify missing or ambiguous sections.
   4. **Dependency discovery phase** - Extract upstreams/downstreams, validate against `dependency.md`, create stubs for missing dependencies.
   5. Ask the **minimum** questions required (dependency unknowns, acceptance criteria ambiguity).
-  6. Write answered questions to `faq.md` (append-only).
-  7. Write unresolved items to `blocker.md` with checkboxes and next steps.
-  8. Update feature document: Requirements, Acceptance Criteria, Dependencies section, Status and Changelog.
+  6. Write unresolved items to `blocker.md` with checkboxes and next steps.
+  7. Update feature document: Requirements, Acceptance Criteria, Dependencies section, Status and Changelog.

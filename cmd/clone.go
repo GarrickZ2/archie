@@ -27,7 +27,7 @@ This command will:
 Clone Strategies:
   context  - Copy project context and structure (recommended)
              Includes: background.md, dependency.md, architecture.md,
-                      storage.md, faq.md, api/
+                      storage.md, api/
 
   light    - Copy only background documentation
              Includes: background.md

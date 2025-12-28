@@ -31,9 +31,8 @@ Its primary goal is to:
    All status, design, and specs revolve around:
    `features/<feature-key>.md`
 
-4. **Append-Only Where It Matters**  
+4. **Append-Only Where It Matters**
    History must be preserved in:
-   - FAQ
    - Blockers
    - Changelogs
    - Release logs

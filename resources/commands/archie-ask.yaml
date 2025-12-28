@@ -9,7 +9,7 @@ content: |
 
   - Any relevant documentation files
   - `background.md`, `features/<feature-key>.md`, `features/README.md`
-  - `dependency.md`, `faq.md`, `blocker.md`
+  - `dependency.md`, `blocker.md`
   - `spec/<feature-key>.spec.md`, `workflow/<feature-key>/workflow.md`
 
   ---

@@ -16,4 +16,4 @@ content: |
 
   ### Rules
   - Do not change meaning.
-  - If semantic inconsistency is detected: record as FAQ/Blocker; do not "guess and rewrite".
+  - If semantic inconsistency is detected: record as Blocker; do not "guess and rewrite".

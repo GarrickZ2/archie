@@ -49,7 +49,6 @@
 - Readiness: NONE | DRAFT | READY
 
 ## Related Records
-- FAQ: [faq.md#<feature-key>]
 - Blockers: [blocker.md#<feature-key>]
 
 ## Changelog

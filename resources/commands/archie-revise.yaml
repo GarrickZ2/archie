@@ -24,4 +24,4 @@ content: |
 
   ### Correction Behavior
   If the requested change violates hard rules:
-  - Refuse; add FAQ entry if clarification is needed; add blocker if decision required.
+  - Refuse; add blocker if decision required.

@@ -16,7 +16,7 @@ content: |
   - `storage.md`
   - `metrics.md`
   - `tasks.md`
-  - `blocker.md`, `faq.md`
+  - `blocker.md`
 
   ### Writes
   - `spec/<feature-key>.spec.md`

@@ -85,7 +85,6 @@ func (s *DocumentSelector) selectRootDocuments() ([]string, error) {
 		"tasks.md":        "Task tracking",
 		"metrics.md":      "Observability metrics",
 		"api/":            "API documentation",
-		"faq.md":          "Frequently asked questions",
 		"blocker.md":      "Blockers documentation",
 		"architecture.md": "Architecture documentation",
 	}

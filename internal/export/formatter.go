@@ -114,7 +114,6 @@ func (f *Formatter) FormatSectionTitle(title string) string {
 		"storage":      "Storage Design",
 		"tasks":        "Tasks",
 		"api":          "API Documentation",
-		"faq":          "FAQ",
 		"blocker":      "Blockers",
 		"architecture": "Architecture",
 		"feature":      "Feature",

@@ -39,7 +39,7 @@ var strategies = map[CloneStrategy]StrategyDefinition{
 	StrategyContext: {
 		Name:        StrategyContext,
 		Description: "Copy project context and structure (recommended)",
-		Files:       []string{"background.md", "dependency.md", "architecture.md", "storage.md", "faq.md"},
+		Files:       []string{"background.md", "dependency.md", "architecture.md", "storage.md"},
 		Directories: []string{"api"},
 	},
 	StrategyLight: {
@@ -51,7 +51,7 @@ var strategies = map[CloneStrategy]StrategyDefinition{
 	StrategyFull: {
 		Name:        StrategyFull,
 		Description: "Copy everything from source project",
-		Files:       []string{"background.md", "architecture.md", "dependency.md", "deployment.md", "tasks.md", "metrics.md", "faq.md", "blocker.md", "storage.md"},
+		Files:       []string{"background.md", "architecture.md", "dependency.md", "deployment.md", "tasks.md", "metrics.md", "blocker.md", "storage.md"},
 		Directories: []string{"api", "workflow", "spec", "features", "assets"},
 	},
 }
