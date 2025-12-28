@@ -43,6 +43,7 @@
 - Workflow: [workflow/workflow.md#<feature-key>]
 - Metrics: [metrics.md#<feature-key>]
 - Tasks: [tasks.md#<feature-key>]
+- Test Plan: [testplan/<feature-key>.md]
 
 ## Spec
 - Location: spec/<feature-key>.spec.md

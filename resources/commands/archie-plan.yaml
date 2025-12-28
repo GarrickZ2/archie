@@ -1,0 +1,100 @@
+title: Plan
+description: Generate execution plan and manage implementation progress for designed features
+tags: [plan, tasks, timeline, progress, implementation]
+category: Archie
+content: |
+  ## Purpose
+  Manage feature execution: generate tasks, track progress, update timeline, advance status.
+
+  ---
+
+  ## Allowed Status
+  - `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
+
+  Cannot plan if status < `DESIGNED` (run `design` or `spec` first).
+
+  ---
+
+  ## Operations
+
+  ### Generate Plan (Auto-triggered if tasks missing)
+  Create initial execution plan from design artifacts.
+
+  - **Input**: Feature key + optional timeframe/team size/constraints
+  - **Output**: Tasks in `tasks.md` with timeline estimate
+  - **Source**: Workflow, spec, API, storage, metrics artifacts
+
+  ### Update Progress
+  Mark task completion, update status, sync feature progress.
+
+  - **Input**: Progress note (required), task updates (optional)
+  - **Output**: Updated tasks + feature status + changelog
+  - **Valid transitions**: `DESIGNED`/`SPEC_READY` → `IMPLEMENTING` → `FINISHED`
+
+  ### Update Timeline
+  Adjust timeline estimate based on actual progress.
+
+  - **Input**: New constraints or milestone updates
+  - **Output**: Updated timeline section in `tasks.md`
+
+  ### Manage Tasks
+  Add/update/complete individual tasks.
+
+  - **Operations**: Add task, mark in-progress, mark complete, update owner/ETA
+  - **Output**: Updated `tasks.md` with append-only logs
+
+  ---
+
+  ## Reads/Writes
+
+  **Reads**: `features/<key>.md`, `workflow/<key>/*`, `spec/<key>.spec.md`, `tasks.md`, design artifacts
+
+  **Writes**: `tasks.md`, `features/<key>.md` (status + changelog only)
+
+  ---
+
+  ## Task Structure (in tasks.md)
+
+  Each task must include:
+  - `[ ]` checkbox (TODO) / `[>]` (DOING) / `[x]` (DONE)
+  - Owner (can be placeholder/TBD)
+  - Description + Definition of Done
+  - Append-only log for status changes
+  - Optional: ETA, dependencies, blockers
+
+  ---
+
+  ## Timeline Structure (in tasks.md)
+
+  Under each feature section:
+  - Overall estimate range (e.g., 5-7 days, 2-3 weeks)
+  - Key milestones: design → implement → test → rollout
+  - Critical path dependencies
+  - Top 3 risks
+  - Assumptions (team size, complexity, unknowns)
+
+  ---
+
+  ## Core Rules
+
+  1. **Forward-only transitions** - Cannot move status backward
+  2. **Task-status sync** - `IMPLEMENTING` → mark first tasks as DOING; `FINISHED` → warn if incomplete tasks
+  3. **No design changes** - Cannot modify requirements/workflow/API/storage. If issues found → create blocker or use `revise`
+  4. **Auto-generate if missing** - If tasks don't exist for `DESIGNED`/`SPEC_READY` feature → generate from artifacts
+  5. **Traceability** - All changes logged in task logs + feature changelog
+
+  ---
+
+  ## Orchestrator Steps
+
+  1. Validate feature status (>= `DESIGNED`)
+  2. Check if tasks exist:
+     - Missing → generate plan from artifacts (workflow/spec/API/storage/metrics)
+     - Exist → proceed to update
+  3. Execute operation:
+     - **Generate**: analyze artifacts → break down into tasks → estimate timeline → write to `tasks.md`
+     - **Progress update**: parse note → update task status → sync feature status → update changelog
+     - **Timeline update**: adjust estimates → update risks/assumptions → write to `tasks.md`
+     - **Task management**: add/update/complete tasks → append logs
+  4. Verify consistency (task status ↔ feature status)
+  5. Report summary: tasks completed, timeline status, next steps

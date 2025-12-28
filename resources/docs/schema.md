@@ -54,6 +54,12 @@ Notes:
   - hard rules in `background.md`
   - conventions and change records in `api/api.md`
 
+### 1.5 Test Plan
+
+| Workspace File | Schema File |
+|----------------|------------|
+| `testplan/<feature-key>.md` | `.archie/docs/schema/testplan.md` |
+
 ---
 
 ## 2. File Catalog
@@ -71,6 +77,7 @@ Notes:
 | `api/api.md` (and `api/<service>.thrift`) | `api/api.md`: API index, service ownership, and change records per feature. `api/<service>.thrift`: IDL definition (when used). | `design`: whenever adding/modifying RPC/API; When maintaining compatibility or deprecations. | API changes must be recorded in **append-only change records**, For modifications: document old vs new behavior + migration plan, Must obey API hard rules in `background.md` (e.g., Thrift-only). |
 | `dependency.md` | A catalog of upstream/downstream dependencies shared across features (not per-feature deep detail). | When a new dependency is introduced; When dependency properties change (owner/SLA/QPS/constraints); When you want a centralized view of system integration points. | Should list which features depend on each dependency (recommended), Avoid per-feature duplication: feature file should reference dependency name only. |
 | `deployment.md` | Release environment notes, deployment checklist, release order, and append-only release log. | Before and during rollout; When release process changes; After deployment to record outcomes. | Release log must be append-only, Checklist should be used as the operational source of truth. |
+| `testplan/<feature-key>.md` | Simple test case checklist including test IDs, descriptions, priorities, and failure scenario mapping per feature. | `design`: generate initial test plan from artifacts; `test-plan`: update test cases; `revise`: when workflow/spec changes affect testing. | Must include Test Cases section (Unit/Integration/E2E) with simple format, Every test case must link to workflow/spec sections, Optional Failure Scenarios section for error paths. |
 
 ---
 
@@ -118,5 +125,17 @@ assets/
 Constraints:
 - Export output must go under `assets/exports/`
 - Images should be grouped by feature for easy referencing
+
+### 3.4 `testplan/`
+Required (minimum):
+```
+testplan/
+  <feature-key>.md
+```
+
+Constraints:
+- Every feature should have testplan after design phase
+- Test case IDs must follow convention: <feature-key>-{U|I|E}-<###>
+- Simple checklist format with minimal fields
 
 ---

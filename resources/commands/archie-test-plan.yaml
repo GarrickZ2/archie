@@ -1,0 +1,84 @@
+title: Test Plan
+description: Generate simple test case checklists for designed features
+tags: [test, testing, test-plan, quality]
+category: Archie
+content: |
+  ## Purpose
+  Generate simple test case checklists from workflow paths and spec requirements.
+
+  ---
+
+  ## Allowed Status
+  - `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
+
+  Cannot generate test plan if status < `DESIGNED`.
+
+  ---
+
+  ## Operations
+
+  ### Generate (Auto-triggered if testplan missing)
+  Create initial test plan from design artifacts.
+
+  - **Input**: Feature key
+  - **Output**: `testplan/<key>.md`
+  - **Source**: Workflow paths, API endpoints, spec requirements
+
+  ### Update
+  Refresh test cases based on design changes.
+
+  - **Input**: Updated artifacts
+  - **Output**: Updated test cases
+  - **Preserves**: Existing test execution status
+
+  ---
+
+  ## Reads/Writes
+
+  **Reads**: `features/<key>.md`, `workflow/<key>/*`, `spec/<key>.spec.md`
+
+  **Writes**: `testplan/<key>.md`, `features/<key>.md` (Design Artifacts link)
+
+  ---
+
+  ## Test Plan Structure
+
+  Each test plan includes:
+  - **Test Cases**: Simple checklist with ID, description, priority, reference, expected result
+  - **Failure Scenarios** (optional): Error paths with test coverage mapping
+
+  Format:
+  - Test ID: `<feature-key>-{U|I|E}-<###>` (Unit/Integration/E2E)
+  - Priority: P0 (critical), P1 (important), P2 (nice-to-have)
+  - Status: [ ] TODO, [x] DONE
+
+  ---
+
+  ## Core Rules
+
+  1. **Workflow coverage** - All main workflow paths should have corresponding test cases
+  2. **Failure scenarios** - Critical error paths should be documented
+  3. **Traceability** - Every test case links to workflow/spec section
+  4. **Simplicity** - Keep test descriptions brief and actionable
+
+  ---
+
+  ## Orchestrator Steps
+
+  1. Validate feature status (>= `DESIGNED`)
+  2. Check if testplan exists:
+     - Missing → generate from artifacts
+     - Exists → proceed to update
+  3. Execute operation:
+     - **Generate**:
+       - Parse workflow paths from workflow/*.mmd
+       - Extract key requirements from spec
+       - Generate test case list (Unit/Integration/E2E)
+       - Map failure scenarios from workflow error paths
+       - Write testplan/<key>.md
+     - **Update**:
+       - Compare current artifacts vs existing test plan
+       - Add test cases for new paths/requirements
+       - Mark obsolete tests
+  4. Update feature.md Design Artifacts link
+  5. Report: test count, critical paths covered

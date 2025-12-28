@@ -73,9 +73,10 @@
 - Rollback: [ ]
 
 ## Test Plan
-- Unit tests: [ ]
-- Integration tests: [ ]
-- Load tests: [ ]
+- Unit test coverage: [list key unit tests or link to test plan]
+- Integration test scenarios: [list key integration flows or link to test plan]
+- E2E test scenarios: [list critical user journeys or link to test plan]
+- Detailed test plan: [testplan/<feature-key>.md]
 
 ## Changelog
 - YYYY-MM-DD (who): created

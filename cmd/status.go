@@ -13,7 +13,9 @@ import (
 )
 
 var (
-	compactFlag bool
+	compactFlag  bool
+	overviewFlag bool
+	featureFlag  string
 )
 
 var statusCmd = &cobra.Command{
@@ -50,6 +52,8 @@ Special status:
 func init() {
 	rootCmd.AddCommand(statusCmd)
 	statusCmd.Flags().BoolVarP(&compactFlag, "compact", "c", false, "Show compact status report")
+	statusCmd.Flags().BoolVarP(&overviewFlag, "overview", "o", false, "Show overview directly")
+	statusCmd.Flags().StringVarP(&featureFlag, "feature", "f", "", "Show feature list or specific feature detail (feature-key or file path)")
 }
 
 func runStatus(cmd *cobra.Command, args []string) error {
@@ -60,60 +64,52 @@ func runStatus(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get current directory: %w", err)
 	}
 
+	// Handle direct mode flags
+	if overviewFlag {
+		return showOverallStatus(projectPath)
+	}
+
+	if featureFlag != "" {
+		// Show specific feature detail
+		return showFeatureByPath(projectPath, featureFlag)
+	}
+
+	// -f without value shows feature list
+	if cmd.Flags().Changed("feature") {
+		return showFeatureListMenu(projectPath)
+	}
+
 	// Show interactive TUI menu
 	return showInteractiveMenu(projectPath)
 }
 
 // showInteractiveMenu displays the main TUI menu
 func showInteractiveMenu(projectPath string) error {
-	for {
-		// Main menu options
-		options := []string{
-			"📊 Overview - Show overall project status",
-			"📋 Feature List - Browse and select individual features",
-			"🚪 Exit",
-		}
-
-		var choice string
-		prompt := &survey.Select{
-			Message: "What would you like to view?",
-			Options: options,
-		}
-
-		if err := survey.AskOne(prompt, &choice); err != nil {
-			return fmt.Errorf("menu selection cancelled")
-		}
-
-		// Handle menu choice
-		switch choice {
-		case options[0]: // Overview
-			if err := showOverallStatus(projectPath); err != nil {
-				return err
-			}
-		case options[1]: // Feature List
-			if err := showFeatureListMenu(projectPath); err != nil {
-				return err
-			}
-		case options[2]: // Exit
-			fmt.Println("\n👋 Goodbye!")
-			return nil
-		}
-
-		// After showing a view, ask if user wants to continue
-		var continueViewing bool
-		continuePrompt := &survey.Confirm{
-			Message: "View another report?",
-			Default: true,
-		}
-
-		if err := survey.AskOne(continuePrompt, &continueViewing); err != nil || !continueViewing {
-			fmt.Println("\n👋 Goodbye!")
-			return nil
-		}
-
-		// Clear screen for next iteration
-		fmt.Println()
+	// Main menu options
+	options := []string{
+		"Overview - Show overall project status",
+		"Feature List - Browse and select individual features",
 	}
+
+	var choice string
+	prompt := &survey.Select{
+		Message: "What would you like to view?",
+		Options: options,
+	}
+
+	if err := survey.AskOne(prompt, &choice); err != nil {
+		return fmt.Errorf("menu selection cancelled")
+	}
+
+	// Handle menu choice
+	switch choice {
+	case options[0]: // Overview
+		return showOverallStatus(projectPath)
+	case options[1]: // Feature List
+		return showFeatureListMenu(projectPath)
+	}
+
+	return nil
 }
 
 // showFeatureListMenu displays a list of features and allows selection
@@ -129,7 +125,7 @@ func showFeatureListMenu(projectPath string) error {
 	if len(features) == 0 {
 		ui.ShowInfo("No features found in the features/ directory")
 		fmt.Println()
-		fmt.Println("💡 Tip: Use 'archie setup' to create and manage features")
+		fmt.Println("Tip: Use 'archie setup' to create and manage features")
 		return nil
 	}
 
@@ -187,6 +183,27 @@ func showFeatureListMenu(projectPath string) error {
 	return showFeatureDetail(projectPath, featureName)
 }
 
+// showFeatureByPath shows feature detail by feature-key or file path
+func showFeatureByPath(projectPath, input string) error {
+	// Extract feature key from various input formats
+	featureKey := extractFeatureKey(input)
+	return showFeatureDetail(projectPath, featureKey)
+}
+
+// extractFeatureKey extracts feature-key from file path or returns input as-is
+func extractFeatureKey(input string) string {
+	// Remove leading "./"
+	input = strings.TrimPrefix(input, "./")
+
+	// Remove "features/" prefix if present
+	input = strings.TrimPrefix(input, "features/")
+
+	// Remove ".md" suffix if present
+	input = strings.TrimSuffix(input, ".md")
+
+	return input
+}
+
 // showFeatureDetail 显示单个 feature 的详细信息
 func showFeatureDetail(projectPath, featureKey string) error {
 	detailParser := status.NewDetailParser(nil)
@@ -216,7 +233,7 @@ func handleFeatureNotFound(projectPath, featureKey string) error {
 	}
 
 	if len(features) == 0 {
-		fmt.Println("💡 No features found in the features/ directory")
+		fmt.Println("No features found in the features/ directory")
 		fmt.Println("   Use 'archie setup' to create and manage features")
 		return nil
 	}
@@ -226,7 +243,7 @@ func handleFeatureNotFound(projectPath, featureKey string) error {
 	similarFeatures := status.FindSimilarFeatures(featureKey, features, 3)
 
 	if len(similarFeatures) > 0 {
-		fmt.Println("🔍 Did you mean:")
+		fmt.Println("Did you mean:")
 		fmt.Println()
 		for i, match := range similarFeatures {
 			if i >= 5 { // Show at most 5 suggestions
@@ -238,7 +255,7 @@ func handleFeatureNotFound(projectPath, featureKey string) error {
 	}
 
 	// Show all available features
-	fmt.Println("📋 Available features:")
+	fmt.Println("Available features:")
 	fmt.Println()
 
 	// Group features by status for better organization
@@ -272,7 +289,7 @@ func handleFeatureNotFound(projectPath, featureKey string) error {
 		}
 	}
 
-	fmt.Println("💡 Use: archie status <feature-key> to view details")
+	fmt.Println("Use: archie status <feature-key> to view details")
 	return nil
 }
 
@@ -290,7 +307,7 @@ func showOverallStatus(projectPath string) error {
 	if len(features) == 0 {
 		ui.ShowInfo("No features found in the features/ directory")
 		fmt.Println()
-		fmt.Println("💡 Tip: Use 'archie setup' to create and manage features")
+		fmt.Println("Tip: Use 'archie setup' to create and manage features")
 		return nil
 	}
 

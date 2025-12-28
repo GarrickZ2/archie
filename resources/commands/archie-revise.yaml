@@ -1,27 +1,87 @@
 title: Revise
-description: Modify requirements or design while keeping history traceable
-tags: [revise, modify, requirements]
+description: Comprehensive feature management - modify, create, merge, split, delete, change
+tags: [revise, modify, requirements, feature-management]
 category: Archie
 content: |
-  ### Purpose
-  Modify requirements and/or design. Keep history traceable.
+  ## Purpose
+  Manage features at any stage: modify, create, merge, split, delete, or change status.
 
-  ### Allowed Status
-  - Any (but correction rules apply)
+  ---
 
-  ### Reads
-  - `background.md`
-  - `features/<feature-key>.md`
-  - related artifacts (as needed)
+  ## Operations
 
-  ### Writes
-  - `features/<feature-key>.md`
-  - plus any impacted artifact files (only if necessary and explicitly stated)
+  ### Modify (Default)
+  Update requirements, scope, or design artifacts.
 
-  ### Required Outputs
-  - Changelog updated with what/why.
-  - Status rolls back if critical sections become incomplete.
+  - **Status**: Any
+  - **Output**: Updated feature + artifacts, changelog with what/why
+  - **Note**: Status may roll back if critical sections become incomplete
 
-  ### Correction Behavior
-  If the requested change violates hard rules:
-  - Refuse; add blocker if decision required.
+  ### Create
+  Add new feature.
+
+  - **Output**: New `features/<key>.md` + registry update, status `NOT_REVIEWED`
+  - **Constraint**: Unique feature key required
+
+  ### Merge
+  Combine 2+ features into one.
+
+  - **Status**: Any (but artifacts reconciliation required if >= `DESIGNED`)
+  - **Output**: Merged feature, archive sources, update registry/blockers/dependencies/artifacts
+  - **Constraint**: Must reconcile all artifacts (workflow, API, storage, metrics, tasks)
+
+  ### Split
+  Decompose feature into multiple.
+
+  - **Status**: Any (but artifacts redistribution required if >= `DESIGNED`)
+  - **Output**: Multiple new features, archive original, redistribute artifacts
+  - **Constraint**: All requirements and artifacts must be fully distributed
+
+  ### Delete
+  Remove feature (archival, not destructive).
+
+  - **Status**: Any (confirmation required if >= `SPEC_READY`)
+  - **Output**: Archive to `assets/archive/features/`, update registry, clean up artifacts
+  - **Constraint**: Must handle downstream dependencies and artifact cleanup
+
+  ### Change
+  Update feature status.
+
+  - **Status**: Any → Any (state machine validated)
+  - **Output**: Updated status + changelog
+  - **Constraint**: Must respect state machine transitions and blocker rules
+
+  ---
+
+  ## Reads/Writes
+
+  **Reads**: `background.md`, `features/README.md`, `features/<key>.md`, `dependency.md`, `blocker.md`, related artifacts
+
+  **Writes**: `features/<key>.md`, `features/README.md`, `blocker.md`, `dependency.md`, artifacts, `assets/archive/features/`
+
+  ---
+
+  ## Core Rules
+
+  1. **Traceability** - All changes update changelog with what/why
+  2. **Status integrity** - Status rolls back if critical sections incomplete, respect state machine
+  3. **Hard rules** - Refuse changes violating `background.md`, add blocker if decision needed
+  4. **Artifact consistency** - For >= `DESIGNED` features, reconcile/redistribute all artifacts (workflow, API, storage, metrics, tasks)
+  5. **Registry sync** - Always update `features/README.md` for create/merge/split/delete
+
+  ---
+
+  ## Orchestrator Steps
+
+  1. Parse operation mode (default: modify)
+  2. Load context: background, feature files, artifacts, blockers, dependencies
+  3. Validate operation (status compatibility, hard rules, artifact impact)
+  4. Execute operation:
+     - **Modify**: identify changes → update feature/artifacts → update changelog → validate status
+     - **Create**: validate key → collect info → create file + update registry
+     - **Merge**: validate sources → reconcile artifacts → combine content → archive sources → update all references
+     - **Split**: determine boundaries → redistribute artifacts → create new features → archive original → update all references
+     - **Delete**: validate constraints → archive feature + artifacts → update registry/blockers/dependencies → log deletion
+     - **Change**: validate transition → update status + changelog → ensure blocker consistency
+  5. Verify schema compliance + artifact integrity
+  6. Report summary
