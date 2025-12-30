@@ -1,76 +1,80 @@
 title: Review
-description: Clarify requirements and dependencies to complete the feature review
-tags: [review, requirements, dependencies]
+description: Clarify business requirements and scope through user dialogue
+tags: [review, requirements, business]
 category: Archie
 content: |
-  ## Purpose
-  Clarify requirements and dependencies, eliminate ambiguity. Produce a review-complete feature document and either unblock it or explicitly block it with tracked blockers.
+  ### Purpose
+  Clarify business requirements, scope, and logic through conversation with user.
+  Prepare feature for design phase without considering technical details.
 
-  ---
+  ### Allowed Status
+  `NOT_REVIEWED`, `UNDER_REVIEW`, `BLOCKED`
 
-  ## Allowed Status
+  ### Workflow
 
-  - `NOT_REVIEWED`
-  - `UNDER_REVIEW`
-  - `BLOCKED`
+  #### 1. Understand Context
+  - Read: background.md (business context), features/<feature-key>.md
+  - Understand: What problem? Why solve it?
 
-  ---
+  #### 2. Explore Business Requirements
+  Ask user about:
+  - Business goal and motivation
+  - Users and stakeholders
+  - Key use cases
+  - Problems being solved
+  - Success criteria (business outcomes)
 
-  ## Reads
+  #### 3. Clarify Scope
+  Ask user about:
+  - What's in scope? Out of scope?
+  - Must-haves vs nice-to-haves?
+  - Constraints (business, compliance, timeline)?
+  - What are we NOT doing?
 
-  - `background.md`
-  - `features/<feature-key>.md`
-  - `dependency.md`
-  - `blocker.md`
+  #### 4. Define Business Logic
+  Ask user to describe:
+  - Main business flow (user perspective)
+  - Edge cases (business handling)
+  - Business rules and decisions
+  - Failure scenarios (from user perspective)
 
-  ---
+  #### 5. Summarize and Confirm
+  Present summary of gathered information:
+  - Business Goal
+  - Use Cases
+  - Functional Scope (in/out of scope)
+  - Business Logic (flow, rules, edge cases)
+  - Acceptance Criteria (business outcomes)
 
-  ## Writes
+  Ask user: "Should I write this to features/<feature-key>.md? Any final adjustments?"
 
-  - `features/<feature-key>.md`
-  - `blocker.md`
-  - `dependency.md`
+  #### 6. Document After Approval
+  ONLY after explicit user approval:
+  - Write to features/<feature-key>.md (all sections above)
+  - Update status: READY_FOR_DESIGN (if complete)
+  - Update changelog: record completion of review
+  - Report completion summary
 
-  ---
+  ### Reads
+  - background.md (business context only)
+  - features/<feature-key>.md
 
-  ## Required Outputs
+  ### Writes
+  - features/<feature-key>.md (Requirements, Scope, Business Logic, Acceptance Criteria)
+  - blocker.md (if business requirements unclear)
 
-  - `features/<feature-key>.md` must contain complete: Summary, Scope, Requirements, Dependencies, Acceptance Criteria
-  - Dependencies must be: explicitly named, validated against `dependency.md`, annotated with interaction type
-  - All uncertainties must be recorded in `blocker.md` (unresolved issues)
-  - Status transition: any unchecked blocker → `BLOCKED`, else → `READY_FOR_DESIGN`
+  ### Output Focus
+  Business-readable documentation:
+  - Clear functional scope
+  - Business logic and flow
+  - User-centric use cases
 
-  ---
+  NOT technical details:
+  - No API/RPC definitions
+  - No storage schema
+  - No technical dependencies
+  - No service selection
 
-  ## Dependency Review Rules (Hard Gate)
-
-  During review, the agent **must**:
-
-  1. **Discover dependencies** - Infer upstreams/downstreams. No feature may have empty Dependencies section unless justified.
-  2. **Validate against `dependency.md`** - Reference existing dependencies by name. Create minimal stubs for missing ones.
-  3. **Clarify critical attributes** - Determine owner/team, interface type, stability/SLA, constraints for each dependency.
-  4. **Block if unclear** - If any required dependency attribute is unknown and blocks design, create blocker and keep status `BLOCKED`.
-
-  ---
-
-  ## Correction Behavior
-
-  If the feature file does not exist:
-  - Refuse `review`
-  - Instruct the user to create the feature via `init` (or `revise` to scaffold) first.
-
-  ---
-
-  ## Prompt Skeleton (Orchestrator)
-
-  **Goal:** Make the feature *review-complete* with dependency clarity and minimal user Q&A.
-
-  **Steps:**
-
-  1. Load `background.md` hard rules; reject conflicting requirements.
-  2. **Feature selection phase** - If no feature-key provided: read `features/README.md` and recommend the most ready-to-review feature based on status, dependencies, and blockers.
-  3. Parse feature document; identify missing or ambiguous sections.
-  4. **Dependency discovery phase** - Extract upstreams/downstreams, validate against `dependency.md`, create stubs for missing dependencies.
-  5. Ask the **minimum** questions required (dependency unknowns, acceptance criteria ambiguity).
-  6. Write unresolved items to `blocker.md` with checkboxes and next steps.
-  7. Update feature document: Requirements, Acceptance Criteria, Dependencies section, Status and Changelog.
+  ### Correction Behavior
+  - If feature file missing → instruct `revise --create`
+  - If business requirements fundamentally unclear → create blocker, status BLOCKED

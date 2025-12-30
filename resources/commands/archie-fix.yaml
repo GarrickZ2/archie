@@ -6,14 +6,103 @@ content: |
   ## Command: `fix <path> [feature-key]`
 
   ### Purpose
-  Fix formatting/structure without semantic changes.
+  Fix formatting/structure without semantic changes. This is for correcting document format issues while preserving content meaning.
 
   ### Allowed Status
   - Any
 
-  ### Reads/Writes
-  - The target file only
+  ---
 
-  ### Rules
-  - Do not change meaning.
-  - If semantic inconsistency is detected: record as Blocker; do not "guess and rewrite".
+  ## Workflow
+
+  #### Step 1: Read and Analyze
+  - Read target file
+  - Detect formatting/structural issues
+  - Check against schema (.archie/docs/schema.md)
+
+  #### Step 2: Identify Issues
+  Detect issues such as:
+  - **Formatting**: Indentation, markdown syntax, line breaks, heading levels
+  - **Structure**: Missing required sections, section ordering per schema
+  - **Compliance**: Schema field format (e.g., status values, changelog format)
+  - **Whitespace**: Extra blank lines, trailing spaces
+
+  #### Step 3: Present Issues to User
+  - Show detected formatting issues
+  - Show proposed fixes (before/after comparison)
+  - Clearly distinguish: formatting fixes vs semantic issues
+  - Ask user: "Should I apply these formatting fixes?"
+
+  #### Step 4: Execute After Approval
+  ONLY after explicit user approval:
+  - Apply formatting fixes
+  - Verify schema compliance
+  - Report completion summary
+
+  #### Step 5: Handle Semantic Issues
+  If semantic inconsistencies detected:
+  - DO NOT modify content automatically
+  - Create blocker documenting the issue
+  - Suggest appropriate command to fix (review/revise/design)
+
+  ---
+
+  ## Scope
+
+  ### What "Fix" Means (Allowed)
+  - Correct markdown syntax errors
+  - Adjust indentation to match schema
+  - Reorder sections to match schema template
+  - Fix heading levels (e.g., ### instead of ##)
+  - Remove extra whitespace
+  - Correct field formats (e.g., date formats, status enum values)
+
+  ### What "Fix" Does NOT Mean (Forbidden)
+  - Change business requirements
+  - Modify technical design decisions
+  - Rewrite descriptions or content
+  - Add or remove features
+  - Change workflow logic
+  - Update API/storage schemas
+
+  ---
+
+  ## Examples
+
+  ### Example 1: Formatting Fix (Allowed)
+  **Before**: Missing heading
+  ```
+  Business Goal
+  Improve user retention by 20%
+  ```
+
+  **After**: Correct heading level
+  ```
+  ## Business Goal
+  Improve user retention by 20%
+  ```
+
+  ### Example 2: Semantic Issue (Forbidden, Create Blocker)
+  **Issue**: Feature status is `DESIGNED` but workflow/ directory is empty
+  **Action**: DO NOT change status. Create blocker: "Workflow artifacts missing for DESIGNED status"
+
+  ---
+
+  ## Reads/Writes
+
+  **Reads**:
+  - Target file
+  - Corresponding schema file (.archie/docs/schema/<file>.md)
+
+  **Writes**:
+  - Target file (formatting only, after user approval)
+  - blocker.md (if semantic issues detected)
+
+  ---
+
+  ## Core Rules
+
+  1. **User approval required** - Always show proposed fixes and get approval before writing
+  2. **No semantic changes** - Only fix formatting/structure, never change meaning
+  3. **Schema compliance** - All fixes must align with .archie/docs/schema.md
+  4. **Create blockers for semantic issues** - Do not guess or auto-fix semantic problems

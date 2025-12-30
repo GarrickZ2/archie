@@ -52,19 +52,52 @@ content: |
 
   ---
 
+  ## Workflow
+
+  ### Phase 1: Gather Information
+  Interactively collect from user:
+  - Project name (optional but recommended)
+  - List of features (or read from existing docs/background)
+  - Timeline / milestones (optional)
+  - Tech stack
+  - Design hard rules
+  - Stakeholders / owners
+  - Existing docs to reference
+
+  ### Phase 2: Plan Initialization
+  Analyze current workspace and plan:
+  1. Identify files to create (background.md, features/README.md, features/<key>.md)
+  2. Identify files to normalize (existing docs → Archie schema)
+  3. Determine feature set (from user input or derived from docs)
+
+  ### Phase 3: Present Plan to User
+  Show initialization plan:
+  - Files to be created (with template previews)
+  - Files to be normalized (show: original → Archie schema)
+  - Feature registry to be generated
+  - Where legacy content will be preserved (if applicable)
+
+  Ask user: "Should I proceed with this initialization plan?"
+
+  ### Phase 4: Execute After Approval
+  ONLY after explicit user approval:
+  1. **Create Missing Files** - Create required files/directories with standard templates
+  2. **Normalize Existing Content** - Preserve original (copy to "Legacy" section or `assets/refs/`), rewrite to Archie schema
+  3. **Generate Feature Registry** - Create features/README.md and features/<key>.md for each feature
+  4. **Assign Initial Status** - Set all features to `NOT_REVIEWED`
+  5. **Validate Compliance** - Ensure all files follow `.archie/docs/schema.md`
+
+  ### Phase 5: Report Completion
+  - Summarize what was created/modified
+  - Show feature registry
+  - Suggest next steps (e.g., "Run `archie review <feature-key>` to start")
+
   ## Behavior Requirements
 
-  1. **Create Missing Files** (non-destructive) - Create required files/directories with standard templates. All files must strictly follow `.archie/docs/schema.md`.
-
-  2. **Normalize Existing Content** (safe rewrite) - Preserve original content (copy to "Legacy" section or `assets/refs/`), then rewrite to standard Archie template.
-
-  3. **Establish the Feature Set** - Determine feature set from: user-provided list, existing docs, or Archie-derived (must confirm with user). Output `features/README.md` registry and `features/<feature-key>.md` for each feature.
-
-  4. **Assign Initial Status** - Default to `NOT_REVIEWED` for each feature.
-
-  5. **Correction Mode** - Refuse other commands until `init` succeeds.
-
-  6. **Format Compliance** - All operations must strictly follow `.archie/docs/schema.md`. Schema validation is mandatory.
+  1. **User Confirmation Required** - Must show initialization plan and get approval before any file operations
+  2. **Format Compliance** - All operations must strictly follow `.archie/docs/schema.md`. Schema validation is mandatory.
+  3. **Preserve Existing Content** - When normalizing, preserve original content in "Legacy" section or `assets/refs/`
+  4. **Correction Mode** - Refuse write commands (review/design/spec/etc) until `init` succeeds. Read-only commands (ask) are allowed.
 
   ---
 

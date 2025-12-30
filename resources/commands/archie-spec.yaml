@@ -33,10 +33,35 @@ content: |
   If any design artifact is missing (API/storage/workflow/metrics/tasks):
   - Refuse to mark READY; create blockers listing missing artifacts; set status to `UNDER_DESIGN` or `BLOCKED`.
 
-  ### Prompt Skeleton (Orchestrator)
-  - Goal: consolidate design outputs into an executable spec.
-  - Steps:
-      1. Validate design completeness.
-      2. Derive spec sections deterministically from artifacts.
-      3. Record assumptions and explicit non-goals.
-      4. Write spec file; update feature spec link/readiness/status.
+  ### Workflow
+
+  #### Step 1: Validate Design Completeness
+  - Check all required artifacts exist: API, workflow, storage, metrics
+  - If any missing → create blockers, refuse to proceed
+
+  #### Step 2: Generate Spec from Artifacts
+  Derive spec sections deterministically:
+  - **Interfaces**: from api/api.md and api/*.thrift
+  - **Data Model**: from storage.md
+  - **Workflow**: from workflow/<feature-key>/*.mmd and workflow.md
+  - **Edge Cases**: from workflow failure paths
+  - **Observability**: from metrics.md
+  - **Test Plan**: from tasks.md or generate basic checklist
+  - **Rollout**: from deployment considerations in background.md
+
+  #### Step 3: Present Spec to User
+  - Show generated spec with key sections highlighted
+  - Ask user: "Does this spec capture all requirements? Any sections need revision?"
+
+  #### Step 4: Handle User Feedback
+  - If user requests changes: apply modifications and re-present
+  - If user approves: proceed to write
+
+  #### Step 5: Write Files After Approval
+  - Write spec/<feature-key>.spec.md
+  - Update features/<feature-key>.md:
+    - Spec.Location → spec file path
+    - Spec.Readiness → READY
+    - Status → SPEC_READY
+    - Changelog → record spec generation timestamp and readiness
+  - Report completion summary

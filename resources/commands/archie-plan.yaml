@@ -17,12 +17,20 @@ content: |
 
   ## Operations
 
-  ### Generate Plan (Auto-triggered if tasks missing)
+  ### Generate Plan
   Create initial execution plan from design artifacts.
 
   - **Input**: Feature key + optional timeframe/team size/constraints
   - **Output**: Tasks in `tasks.md` with timeline estimate
   - **Source**: Workflow, spec, API, storage, metrics artifacts
+
+  **Workflow**:
+  1. Generate task list and timeline from design artifacts
+  2. Present plan to user: show tasks, timeline estimate, dependencies
+  3. Ask user: "Does this plan look reasonable? Any adjustments needed?"
+  4. Apply user feedback if needed
+  5. Get explicit approval before writing to tasks.md
+  6. Write to tasks.md and report completion
 
   ### Update Progress
   Mark task completion, update status, sync feature progress.
@@ -30,6 +38,14 @@ content: |
   - **Input**: Progress note (required), task updates (optional)
   - **Output**: Updated tasks + feature status + changelog
   - **Valid transitions**: `DESIGNED`/`SPEC_READY` → `IMPLEMENTING` → `FINISHED`
+
+  **Workflow**:
+  1. Ask user for progress note (what was accomplished?)
+  2. Ask user which tasks to mark as in-progress/completed
+  3. Show proposed status updates (tasks + feature status + changelog entry)
+  4. Ask user: "Should I apply these updates?"
+  5. Get explicit approval before writing
+  6. Write to tasks.md and features/<key>.md, report completion
 
   ### Update Timeline
   Adjust timeline estimate based on actual progress.
@@ -80,8 +96,9 @@ content: |
   1. **Forward-only transitions** - Cannot move status backward
   2. **Task-status sync** - `IMPLEMENTING` → mark first tasks as DOING; `FINISHED` → warn if incomplete tasks
   3. **No design changes** - Cannot modify requirements/workflow/API/storage. If issues found → create blocker or use `revise`
-  4. **Auto-generate if missing** - If tasks don't exist for `DESIGNED`/`SPEC_READY` feature → generate from artifacts
-  5. **Traceability** - All changes logged in task logs + feature changelog
+  4. **User approval required** - All write operations require user approval after showing proposed changes
+  5. **Generate if missing** - If tasks don't exist for `DESIGNED`/`SPEC_READY` feature → generate from artifacts (with user approval)
+  6. **Traceability** - All changes logged in task logs + feature changelog
 
   ---
 
@@ -89,12 +106,12 @@ content: |
 
   1. Validate feature status (>= `DESIGNED`)
   2. Check if tasks exist:
-     - Missing → generate plan from artifacts (workflow/spec/API/storage/metrics)
-     - Exist → proceed to update
-  3. Execute operation:
-     - **Generate**: analyze artifacts → break down into tasks → estimate timeline → write to `tasks.md`
-     - **Progress update**: parse note → update task status → sync feature status → update changelog
-     - **Timeline update**: adjust estimates → update risks/assumptions → write to `tasks.md`
-     - **Task management**: add/update/complete tasks → append logs
+     - Missing → generate plan (follow Generate Plan workflow with user approval)
+     - Exist → proceed to requested operation
+  3. Execute operation (following interactive workflows defined above):
+     - **Generate**: analyze artifacts → break down into tasks → show to user → get approval → write to `tasks.md`
+     - **Progress update**: get user input → show proposed updates → get approval → write changes
+     - **Timeline update**: discuss adjustments → show updated timeline → get approval → write to `tasks.md`
+     - **Task management**: discuss changes → show task updates → get approval → write to `tasks.md`
   4. Verify consistency (task status ↔ feature status)
   5. Report summary: tasks completed, timeline status, next steps

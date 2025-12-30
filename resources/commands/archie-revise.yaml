@@ -1,87 +1,93 @@
 title: Revise
-description: Comprehensive feature management - modify, create, merge, split, delete, change
-tags: [revise, modify, requirements, feature-management]
+description: Refine business requirements through iterative dialogue
+tags: [revise, requirements, refinement]
 category: Archie
 content: |
-  ## Purpose
-  Manage features at any stage: modify, create, merge, split, delete, or change status.
+  ### Purpose
+  Refine business requirements at any stage through user dialogue.
+  Primary operation: Modify (iterate on requirements with user).
 
-  ---
+  ### Operations
 
-  ## Operations
+  #### Modify (Default) - Business Requirement Refinement
 
-  ### Modify (Default)
-  Update requirements, scope, or design artifacts.
+  Workflow:
+  1. Understand Change Intent
+     - Ask: What needs to change? Why?
+     - Ask: What's unclear or incorrect?
 
-  - **Status**: Any
-  - **Output**: Updated feature + artifacts, changelog with what/why
-  - **Note**: Status may roll back if critical sections become incomplete
+  2. Business Context Discussion
+     - Ask: Has business goal changed?
+     - Ask: New use cases or constraints?
+     - Discuss: Scope adjustments needed?
 
-  ### Create
-  Add new feature.
+  3. Refine Requirements
+     - Iteratively clarify with user:
+       - Functional scope
+       - Business logic
+       - Acceptance criteria
 
-  - **Output**: New `features/<key>.md` + registry update, status `NOT_REVIEWED`
-  - **Constraint**: Unique feature key required
+  4. Present Proposed Changes
+     - Show what will be updated in features/<feature-key>.md
+     - Show proposed changelog entry
+     - Ask user: "Should I apply these changes?"
 
-  ### Merge
-  Combine 2+ features into one.
+  5. Document Changes After Approval
+     - ONLY after explicit user approval:
+       - Update features/<feature-key>.md
+       - Update changelog (requirement changes, rationale)
+       - Report completion summary
 
-  - **Status**: Any (but artifacts reconciliation required if >= `DESIGNED`)
-  - **Output**: Merged feature, archive sources, update registry/blockers/dependencies/artifacts
-  - **Constraint**: Must reconcile all artifacts (workflow, API, storage, metrics, tasks)
+  #### Create
+  Add new feature through business dialogue.
 
-  ### Split
-  Decompose feature into multiple.
+  Workflow:
+  1. Collect Information
+     - Ask: What's the business goal?
+     - Ask: Key use cases?
+     - Ask: Functional scope?
 
-  - **Status**: Any (but artifacts redistribution required if >= `DESIGNED`)
-  - **Output**: Multiple new features, archive original, redistribute artifacts
-  - **Constraint**: All requirements and artifacts must be fully distributed
+  2. Present New Feature
+     - Show proposed feature file content
+     - Ask user: "Should I create this feature?"
 
-  ### Delete
-  Remove feature (archival, not destructive).
+  3. Create Feature File After Approval
+     - ONLY after explicit user approval:
+       - Write features/<feature-key>.md
+       - Update features/README.md
+       - Status: NOT_REVIEWED
+       - Report completion
 
-  - **Status**: Any (confirmation required if >= `SPEC_READY`)
-  - **Output**: Archive to `assets/archive/features/`, update registry, clean up artifacts
-  - **Constraint**: Must handle downstream dependencies and artifact cleanup
+  #### Merge / Split / Delete
 
-  ### Change
-  Update feature status.
+  **All operations require explicit user approval before execution.**
 
-  - **Status**: Any → Any (state machine validated)
-  - **Output**: Updated status + changelog
-  - **Constraint**: Must respect state machine transitions and blocker rules
+  **Merge**: Combine features, reconcile requirements if >= DESIGNED
+  1. Discuss business rationale with user
+  2. Show how requirements will be combined
+  3. Get approval before merging
 
-  ---
+  **Split**: Decompose feature, redistribute requirements if >= DESIGNED
+  1. Discuss decomposition strategy with user
+  2. Show how requirements will be redistributed
+  3. Get approval before splitting
 
-  ## Reads/Writes
+  **Delete**: Archive feature (extra confirmation if >= SPEC_READY)
+  1. Discuss business impact with user
+  2. Show what will be archived and where
+  3. For features >= SPEC_READY: Ask for extra confirmation
+  4. Get explicit approval before archiving
 
-  **Reads**: `background.md`, `features/README.md`, `features/<key>.md`, `dependency.md`, `blocker.md`, related artifacts
+  ### Reads
+  - background.md, features/<feature-key>.md, blocker.md
 
-  **Writes**: `features/<key>.md`, `features/README.md`, `blocker.md`, `dependency.md`, artifacts, `assets/archive/features/`
+  ### Writes
+  - features/<feature-key>.md (Requirements, Scope, Logic, Acceptance Criteria)
+  - features/README.md, blocker.md
+  - assets/archive/features/ (for delete)
 
-  ---
-
-  ## Core Rules
-
-  1. **Traceability** - All changes update changelog with what/why
-  2. **Status integrity** - Status rolls back if critical sections incomplete, respect state machine
-  3. **Hard rules** - Refuse changes violating `background.md`, add blocker if decision needed
-  4. **Artifact consistency** - For >= `DESIGNED` features, reconcile/redistribute all artifacts (workflow, API, storage, metrics, tasks)
-  5. **Registry sync** - Always update `features/README.md` for create/merge/split/delete
-
-  ---
-
-  ## Orchestrator Steps
-
-  1. Parse operation mode (default: modify)
-  2. Load context: background, feature files, artifacts, blockers, dependencies
-  3. Validate operation (status compatibility, hard rules, artifact impact)
-  4. Execute operation:
-     - **Modify**: identify changes → update feature/artifacts → update changelog → validate status
-     - **Create**: validate key → collect info → create file + update registry
-     - **Merge**: validate sources → reconcile artifacts → combine content → archive sources → update all references
-     - **Split**: determine boundaries → redistribute artifacts → create new features → archive original → update all references
-     - **Delete**: validate constraints → archive feature + artifacts → update registry/blockers/dependencies → log deletion
-     - **Change**: validate transition → update status + changelog → ensure blocker consistency
-  5. Verify schema compliance + artifact integrity
-  6. Report summary
+  ### Core Rules
+  1. **Business dialogue first** - Discuss with user before making changes
+  2. **Traceability** - Document what changed in requirements and why
+  3. **Status integrity** - Roll back status if requirements become incomplete
+  4. **Iterative refinement** - Multiple revise cycles expected and encouraged

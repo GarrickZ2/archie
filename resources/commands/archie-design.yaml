@@ -1,58 +1,120 @@
 title: Design
-description: Generate concrete technical design artifacts and update feature status
+description: Gather technical requirements through iterative dialogue and produce design artifacts
 tags: [design, architecture, artifacts]
 category: Archie
 content: |
   ### Purpose
-  Produce concrete system design artifacts for the feature and link them from the feature doc.
+  Gather all technical requirements from user through iterative dialogue.
+  AI role: Ask questions, record answers, organize into design documents.
 
   ### Allowed Status
-  - `READY_FOR_DESIGN`, `UNDER_DESIGN`
+  `READY_FOR_DESIGN`, `UNDER_DESIGN`
+
+  ### Workflow
+
+  #### 1. Explore Technical Documents
+  - Read: api/api.md, storage.md, dependency.md, workflow/*, metrics.md
+  - Read: architecture.md (if exists)
+  - Understand: Existing technical architecture and designs
+
+  #### 2. Gather Architecture Context (Iterative)
+  Ask user repeatedly until ALL information is clear and complete:
+
+  **Actors**: Who will call this feature? (users, services, systems)
+  **Dependencies**: What upstream services/APIs does this need?
+  **Service**: Which service implements this? (existing or new)
+  **API Requirements**: What interfaces are needed?
+  **Storage Requirements**: What data needs to be stored?
+  **Technical Constraints**: Performance, security, compliance?
+
+  Continue asking follow-up questions until:
+  - No confusion remains
+  - All required information obtained
+  - User confirms understanding is complete
+
+  #### 3. Design Workflow (Interactive)
+  Work with user to design workflow:
+  - Ask: Describe the complete flow step by step?
+  - Ask: What are the failure scenarios?
+  - Ask: Retry/idempotency requirements?
+
+  Generate workflow diagrams based on user's description.
+  Present workflow to user.
+  Ask user: "Does this workflow look correct?"
+  Get explicit approval before proceeding to next step.
+
+  #### 4. Design API (Interactive)
+  Work with user to design APIs:
+  - Ask: What methods/endpoints are needed?
+  - Ask: Request/response structures?
+  - Ask: Error handling approach?
+
+  Present proposed API design to user.
+  Ask user: "Does this API design meet your requirements?"
+  Get explicit approval before proceeding to next step.
+
+  #### 5. Design Storage (Interactive)
+  Work with user to design storage:
+  - Ask: What tables/collections are needed?
+  - Ask: Schema (columns, types, indexes)?
+  - Ask: Migration plan for existing data?
+
+  Present proposed storage design to user.
+  Ask user: "Does this storage schema work for your needs?"
+  Get explicit approval before proceeding to next step.
+
+  #### 6. Design Metrics (Interactive)
+  Work with user to design observability:
+  - Ask: What metrics indicate success?
+  - Ask: What alerts are needed?
+  - Ask: SLI/SLO targets?
+
+  Present proposed metrics design to user.
+  Ask user: "Are these metrics and alerts appropriate?"
+  Get explicit approval before proceeding to final confirmation.
+
+  #### 7. Final Confirmation
+  Present complete design summary:
+  - Architecture: actors, dependencies, service
+  - Workflow: main flow, failure paths
+  - API: methods, structures
+  - Storage: schema, migration
+  - Metrics: SLIs, alerts
+
+  Ask user: "Should I write these design artifacts to files?"
+
+  ONLY after explicit user approval:
+  - Write all design artifact files
+  - Update features/<feature-key>.md (Design Artifacts links + status ONLY)
+  - Update dependency.md (if dependencies changed)
+  - Set Status: DESIGNED
+
+  Report completion summary to user.
 
   ### Reads
-  - `background.md`
-  - `features/<feature-key>.md`
-  - `dependency.md`
-  - `api/api.md` and relevant `api/*.thrift` (if service exists)
-  - `storage.md`, `workflow/*`, `metrics.md`, `tasks.md` (for consistency)
+  - background.md, features/<feature-key>.md
+  - api/api.md, storage.md, dependency.md, workflow/*, metrics.md
+  - architecture.md (if exists)
 
   ### Writes
-  - `api/api.md` (append change record and method summaries for impacted services)
-  - `api/<service>.thrift` (only if needed/allowed by background hard rules)
-  - `storage.md` (under the feature section)
-  - `workflow/<feature-key>/workflow.md`
-  - `workflow/<feature-key>/*.mmd`
-  - `metrics.md` (under the feature section)
-  - `tasks.md` (under the feature section)
-  - `features/<feature-key>.md` (design links + status + changelog)
+  - api/api.md, api/<service>.thrift
+  - storage.md
+  - workflow/<feature-key>/workflow.md, workflow/<feature-key>/*.mmd
+  - metrics.md
+  - dependency.md (if dependencies changed)
+  - features/<feature-key>.md (Design Artifacts links + status ONLY, NO changelog, NO tasks)
 
-  ### Required Outputs
-  - API design recorded in `api/api.md` under the impacted service(s) with **Change Records**.
-  - Storage final schema + change plan recorded in `storage.md`.
-  - Workflow diagrams created (at least `main.mmd`) and indexed in `workflow/<feature-key>/workflow.md`.
-  - Metrics and Tasks created for the feature.
-  - Status transition:
-      - If any unchecked blocker exists → `BLOCKED`
-      - Else → `DESIGNED`
+  **Important**: design does NOT:
+  - Write to changelog (other commands handle change tracking)
+  - Create tasks.md (use `plan` command for task generation)
 
-  ### Subagent Invocation (Required)
-  - API Designer (if new/changed API/RPC)
-  - Storage Designer (if storage changes exist)
-  - Workflow Designer (always for non-trivial features)
-  - Metrics Designer (always)
-  - Task Manager (always)
+  ### AI Role
+  - Ask questions to gather information from user
+  - Record and organize user's input
+  - Generate artifacts based on user's decisions
+  - Provide suggestions but user makes final decisions
 
   ### Correction Behavior
-  - If feature status is `BLOCKED` or `NOT_REVIEWED`:
-      - Refuse `design`, instruct `review` first, and create blockers describing missing review artifacts.
-  - If hard rule conflicts are found:
-      - Create blockers and set feature to `BLOCKED`.
-
-  ### Prompt Skeleton (Orchestrator)
-  - Goal: produce complete design artifacts while respecting `background.md` hard rules.
-  - Steps:
-      1. Validate status and review completeness; refuse if not ready.
-      2. Identify required design slices: API, storage, workflow, metrics, tasks.
-      3. Call subagents per slice; each writes only within its scope.
-      4. Integrate outputs and ensure cross-links exist.
-      5. Update feature `Design Artifacts` links, status, and changelog.
+  - If BLOCKED or NOT_REVIEWED → refuse, instruct `review` first
+  - If information incomplete → keep asking until complete
+  - If user uncertain → provide options but user decides
