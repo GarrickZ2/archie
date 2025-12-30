@@ -3,7 +3,9 @@ package agent
 import (
 	"context"
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/afero"
 
@@ -21,6 +23,29 @@ func NewSetupper(fs afero.Fs) Setupper {
 		fs = afero.NewOsFs()
 	}
 	return &DefaultSetupper{fs: fs}
+}
+
+// expandPath expands ~/ prefix in path to user home directory
+func expandPath(path string) (string, error) {
+	if strings.HasPrefix(path, "~/") {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return "", fmt.Errorf("failed to get user home directory: %w", err)
+		}
+		return filepath.Join(homeDir, path[2:]), nil
+	}
+	return path, nil
+}
+
+// resolvePath resolves a path, handling both relative paths (relative to projectPath)
+// and absolute paths starting with ~/ (expanded to home directory)
+func resolvePath(basePath, relPath string) (string, error) {
+	// Check if the relative path starts with ~/
+	if strings.HasPrefix(relPath, "~/") {
+		return expandPath(relPath)
+	}
+	// Otherwise treat as relative to basePath
+	return filepath.Join(basePath, relPath), nil
 }
 
 // Setup sets up agent configuration in the project
@@ -54,7 +79,10 @@ func (s *DefaultSetupper) Setup(ctx context.Context, config SetupConfig) error {
 	commands := agent.Commands()
 	for filename, content := range commands {
 		relPath := filepath.Join(pathConfig.CommandsDir, filename)
-		fullPath := filepath.Join(config.ProjectPath, relPath)
+		fullPath, err := resolvePath(config.ProjectPath, relPath)
+		if err != nil {
+			return fmt.Errorf("failed to resolve path for command %s: %w", filename, err)
+		}
 
 		if err = s.writeFile(fullPath, content); err != nil {
 			return err
@@ -66,7 +94,10 @@ func (s *DefaultSetupper) Setup(ctx context.Context, config SetupConfig) error {
 		subAgents := agent.SubAgents()
 		for filename, content := range subAgents {
 			relPath := filepath.Join(pathConfig.SubAgentsDir, filename)
-			fullPath := filepath.Join(config.ProjectPath, relPath)
+			fullPath, err := resolvePath(config.ProjectPath, relPath)
+			if err != nil {
+				return fmt.Errorf("failed to resolve path for sub-agent %s: %w", filename, err)
+			}
 
 			if err = s.writeFile(fullPath, content); err != nil {
 				return err

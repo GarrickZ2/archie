@@ -32,7 +32,7 @@
   {
     "name": "codex",
     "background_doc": "AGENTS.md",
-    "commands_dir": ".codex/prompts",
+    "commands_dir": "~/.codex/prompts",
     "sub_agents_dir": "",
     "official": true,
     "file_format": "md",
