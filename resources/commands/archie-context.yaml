@@ -191,7 +191,6 @@ content: |
   ## Reads
 
   - `background.md` (check existing context)
-  - `features/README.md` (list of features)
   - `features/<key>.md` (if feature-specific)
   - Schema templates from `.archie/docs/schema/` (for formatting)
 

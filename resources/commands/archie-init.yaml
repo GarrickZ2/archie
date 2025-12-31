@@ -4,18 +4,7 @@ tags: [initialize, setup, workspace]
 category: Archie
 content: |
   ## Purpose
-  Bootstrap an Archie project workspace by normalizing content into Archie schemas and producing a Feature Registry.
-
-  `init` is the first command in the workflow.
-
-  ---
-
-  ## When to Use
-
-  - The folder has some docs, but not in Archie format.
-  - The user has background/feature notes (free-form) and wants Archie to structure them.
-
-  ---
+  Bootstrap an Archie project workspace by normalizing content into Archie schemas.
 
   ## Inputs
 
@@ -47,7 +36,6 @@ content: |
   - `background.md`
 
   ### Features
-  - `features/README.md`
   - `features/<feature-key>.md` (one per feature)
 
   ---
@@ -66,7 +54,7 @@ content: |
 
   ### Phase 2: Plan Initialization
   Analyze current workspace and plan:
-  1. Identify files to create (background.md, features/README.md, features/<key>.md)
+  1. Identify files to create (background.md, features/<key>.md)
   2. Identify files to normalize (existing docs → Archie schema)
   3. Determine feature set (from user input or derived from docs)
 
@@ -74,7 +62,7 @@ content: |
   Show initialization plan:
   - Files to be created (with template previews)
   - Files to be normalized (show: original → Archie schema)
-  - Feature registry to be generated
+  - Feature files to be generated
   - Where legacy content will be preserved (if applicable)
 
   Ask user: "Should I proceed with this initialization plan?"
@@ -83,7 +71,7 @@ content: |
   ONLY after explicit user approval:
   1. **Create Missing Files** - Create required files/directories with standard templates
   2. **Normalize Existing Content** - Preserve original (copy to "Legacy" section or `assets/refs/`), rewrite to Archie schema
-  3. **Generate Feature Registry** - Create features/README.md and features/<key>.md for each feature
+  3. **Generate Feature Files** - Create features/<key>.md for each feature
   4. **Assign Initial Status** - Set all features to `NOT_REVIEWED`
   5. **Validate Compliance** - Ensure all files follow `.archie/docs/schema.md`
 

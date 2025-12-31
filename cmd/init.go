@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sort"
 
 	"github.com/spf13/cobra"
 
@@ -125,6 +126,11 @@ func showSuccessBox(projectPath string, currentAgentName string, currentPathConf
 		// Fallback to showing only current agent if error
 		initializedAgents = []agent.AgentState{}
 	}
+
+	// Sort agents by name alphabetically
+	sort.Slice(initializedAgents, func(i, j int) bool {
+		return initializedAgents[i].AgentName < initializedAgents[j].AgentName
+	})
 
 	content := []string{}
 

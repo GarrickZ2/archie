@@ -1,12 +1,12 @@
 # Storage
 
 ## Conventions
-- Primary DB: (e.g. MySQL)
-- Other stores allowed: (Redis/Mongo/Dynamo) (if any)
-- Naming rules:
-- Migration rules:
-- Retention/TTL rules:
-- PII / compliance rules:
+- Primary DB: [ ]
+- Other stores: [ ]
+- Naming rules: [ ]
+- Migration strategy: [ ]
+- Retention/TTL rules: [ ]
+- PII / compliance rules: [ ]
 
 ## MySQL
 
@@ -24,7 +24,7 @@ Columns:
     - Comment:
     - Notes: (range/encoding)
 
-#### Change Plan (What to do)
+#### Change Plan
 - Action: CREATE | ALTER | DROP | BACKFILL
 - Steps:
     1. ...

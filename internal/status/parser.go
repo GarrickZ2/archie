@@ -84,8 +84,8 @@ func (p *Parser) ParseFeaturesDir(projectPath string) ([]Feature, error) {
 
 	var features []Feature
 	for _, file := range files {
-		// 跳过目录和 README.md
-		if file.IsDir() || file.Name() == "README.md" {
+		// 跳过目录
+		if file.IsDir() {
 			continue
 		}
 

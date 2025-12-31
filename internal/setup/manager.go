@@ -271,7 +271,7 @@ func (m *Manager) openFeature(featureName string) error {
 	return OpenInEditor(featurePath)
 }
 
-// isFeaturesEmpty 检查 features 文件夹是否为空（只有 README.md 或完全没有文件）
+// isFeaturesEmpty 检查 features 文件夹是否为空（完全没有 feature 文件）
 func (m *Manager) isFeaturesEmpty() (bool, error) {
 	featuresPath := filepath.Join(m.projectPath, "features")
 
@@ -288,13 +288,11 @@ func (m *Manager) isFeaturesEmpty() (bool, error) {
 		return false, err
 	}
 
-	// 检查是否只有 README.md
+	// 检查是否有任何 .md 文件
 	mdCount := 0
 	for _, file := range files {
 		if !file.IsDir() && filepath.Ext(file.Name()) == ".md" {
-			if file.Name() != "README.md" {
-				mdCount++
-			}
+			mdCount++
 		}
 	}
 
@@ -322,11 +320,6 @@ func (m *Manager) listFeatures() ([]FeatureInfo, error) {
 	var features []FeatureInfo
 	for _, file := range files {
 		if file.IsDir() || filepath.Ext(file.Name()) != ".md" {
-			continue
-		}
-
-		// 跳过 README.md
-		if file.Name() == "README.md" {
 			continue
 		}
 

@@ -6,14 +6,10 @@ content: |
   ## Purpose
   Manage feature execution: generate tasks, track progress, update timeline, advance status.
 
-  ---
-
   ## Allowed Status
   - `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
 
   Cannot plan if status < `DESIGNED` (run `design` or `spec` first).
-
-  ---
 
   ## Operations
 

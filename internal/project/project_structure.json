@@ -18,7 +18,5 @@
     "testplan",
     "assets"
   ],
-  "files_with_content": {
-    "features/README.md": ""
-  }
+  "files_with_content": {}
 }

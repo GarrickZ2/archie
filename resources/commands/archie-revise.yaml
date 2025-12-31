@@ -54,7 +54,6 @@ content: |
   3. Create Feature File After Approval
      - ONLY after explicit user approval:
        - Write features/<feature-key>.md
-       - Update features/README.md
        - Status: NOT_REVIEWED
        - Report completion
 
@@ -83,7 +82,7 @@ content: |
 
   ### Writes
   - features/<feature-key>.md (Requirements, Scope, Logic, Acceptance Criteria)
-  - features/README.md, blocker.md
+  - blocker.md
   - assets/archive/features/ (for delete)
 
   ### Core Rules

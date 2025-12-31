@@ -1,11 +1,10 @@
 title: Design
-description: Gather technical requirements through iterative dialogue and produce design artifacts
+description: Gather technical requirements and produce design artifacts
 tags: [design, architecture, artifacts]
 category: Archie
 content: |
   ### Purpose
-  Gather all technical requirements from user through iterative dialogue.
-  AI role: Ask questions, record answers, organize into design documents.
+  Gather technical requirements through iterative dialogue and produce design artifacts.
 
   ### Allowed Status
   `READY_FOR_DESIGN`, `UNDER_DESIGN`
@@ -13,83 +12,48 @@ content: |
   ### Workflow
 
   #### 1. Explore Technical Documents
-  - Read: api/api.md, storage.md, dependency.md, workflow/*, metrics.md
-  - Read: architecture.md (if exists)
-  - Understand: Existing technical architecture and designs
+  Read and understand existing architecture: api/api.md, storage.md, dependency.md, workflow/*, metrics.md, architecture.md (if exists)
 
   #### 2. Gather Architecture Context (Iterative)
-  Ask user repeatedly until ALL information is clear and complete:
+  Ask user until ALL information is clear:
+  - **Actors**: Who will use this? (users, services, systems)
+  - **Dependencies**: What upstream services/APIs needed?
+  - **Service**: Which service implements this? (existing or new)
+  - **API Requirements**: What interfaces needed?
+  - **Storage Requirements**: What data to store?
+  - **Technical Constraints**: Performance, security, compliance?
 
-  **Actors**: Who will call this feature? (users, services, systems)
-  **Dependencies**: What upstream services/APIs does this need?
-  **Service**: Which service implements this? (existing or new)
-  **API Requirements**: What interfaces are needed?
-  **Storage Requirements**: What data needs to be stored?
-  **Technical Constraints**: Performance, security, compliance?
-
-  Continue asking follow-up questions until:
-  - No confusion remains
-  - All required information obtained
-  - User confirms understanding is complete
+  Continue until no confusion remains and user confirms completeness.
 
   #### 3. Design Workflow (Interactive)
-  Work with user to design workflow:
-  - Ask: Describe the complete flow step by step?
-  - Ask: What are the failure scenarios?
-  - Ask: Retry/idempotency requirements?
-
-  Generate workflow diagrams based on user's description.
-  Present workflow to user.
-  Ask user: "Does this workflow look correct?"
-  Get explicit approval before proceeding to next step.
+  - Ask user to describe complete flow step by step
+  - Ask about failure scenarios, retry/idempotency requirements
+  - Generate workflow diagrams based on description
+  - Present to user and get explicit approval before proceeding
 
   #### 4. Design API (Interactive)
-  Work with user to design APIs:
-  - Ask: What methods/endpoints are needed?
-  - Ask: Request/response structures?
-  - Ask: Error handling approach?
-
-  Present proposed API design to user.
-  Ask user: "Does this API design meet your requirements?"
-  Get explicit approval before proceeding to next step.
+  - Ask about methods/endpoints needed
+  - Ask about request/response structures and error handling
+  - Present proposed API design
+  - Get explicit approval before proceeding
 
   #### 5. Design Storage (Interactive)
-  Work with user to design storage:
-  - Ask: What tables/collections are needed?
-  - Ask: Schema (columns, types, indexes)?
-  - Ask: Migration plan for existing data?
-
-  Present proposed storage design to user.
-  Ask user: "Does this storage schema work for your needs?"
-  Get explicit approval before proceeding to next step.
+  - Ask about tables/collections needed
+  - Ask about schema (columns, types, indexes) and migration plan
+  - Present proposed storage design
+  - Get explicit approval before proceeding
 
   #### 6. Design Metrics (Interactive)
-  Work with user to design observability:
-  - Ask: What metrics indicate success?
-  - Ask: What alerts are needed?
-  - Ask: SLI/SLO targets?
+  - Ask about success metrics, alerts needed, SLI/SLO targets
+  - Present proposed metrics design
+  - Get explicit approval, then proceed to write artifacts
 
-  Present proposed metrics design to user.
-  Ask user: "Are these metrics and alerts appropriate?"
-  Get explicit approval before proceeding to final confirmation.
-
-  #### 7. Final Confirmation
-  Present complete design summary:
-  - Architecture: actors, dependencies, service
-  - Workflow: main flow, failure paths
-  - API: methods, structures
-  - Storage: schema, migration
-  - Metrics: SLIs, alerts
-
-  Ask user: "Should I write these design artifacts to files?"
-
-  ONLY after explicit user approval:
+  #### 7. Write Design Artifacts
+  After all interactive steps approved:
   - Write all design artifact files
-  - Update features/<feature-key>.md (Design Artifacts links + status ONLY)
+  - Update features/<feature-key>.md (Design Artifacts links ONLY, set Status: DESIGNED)
   - Update dependency.md (if dependencies changed)
-  - Set Status: DESIGNED
-
-  Report completion summary to user.
+  - Report completion summary
 
   ### Reads
   - background.md, features/<feature-key>.md
@@ -101,18 +65,13 @@ content: |
   - storage.md
   - workflow/<feature-key>/workflow.md, workflow/<feature-key>/*.mmd
   - metrics.md
-  - dependency.md (if dependencies changed)
-  - features/<feature-key>.md (Design Artifacts links + status ONLY, NO changelog, NO tasks)
+  - dependency.md (if changed)
+  - features/<feature-key>.md (Design Artifacts links ONLY)
 
-  **Important**: design does NOT:
-  - Write to changelog (other commands handle change tracking)
-  - Create tasks.md (use `plan` command for task generation)
+  **Important**: Does NOT write changelog or tasks.md (use other commands)
 
   ### AI Role
-  - Ask questions to gather information from user
-  - Record and organize user's input
-  - Generate artifacts based on user's decisions
-  - Provide suggestions but user makes final decisions
+  Ask questions, record answers, generate artifacts based on user decisions. Provide suggestions but user makes final decisions.
 
   ### Correction Behavior
   - If BLOCKED or NOT_REVIEWED → refuse, instruct `review` first

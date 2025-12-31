@@ -8,7 +8,7 @@ content: |
   ## Reads
 
   - Any relevant documentation files
-  - `background.md`, `features/<feature-key>.md`, `features/README.md`
+  - `background.md`, `features/<feature-key>.md`
   - `dependency.md`, `blocker.md`
   - `spec/<feature-key>.spec.md`, `workflow/<feature-key>/workflow.md`
 

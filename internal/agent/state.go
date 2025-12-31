@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/spf13/afero"
@@ -193,6 +194,11 @@ func GetAllAgents(projectPath string) ([]AgentInfo, error) {
 			DisplayName:   displayName,
 		})
 	}
+
+	// 按名字首字母排序
+	sort.Slice(infos, func(i, j int) bool {
+		return infos[i].Name < infos[j].Name
+	})
 
 	return infos, nil
 }
