@@ -2,56 +2,44 @@
 
 ## Status
 - Value: NOT_REVIEWED
-- Owner: [ ]
+- Owner: <name>
 - Last Updated: YYYY-MM-DD
-- Reason: [ ]
+- Reason: <why this status>
 
 ## Summary
-- One-liner: [ ]
-- Background / Motivation: [ ]
-- User story / Use case: [ ]
+- One-liner: <max 80 chars>
+- Background: <2-3 sentences>
+- User story: <As a..., I want..., so that...>
 
 ## Scope
 ### In Scope
-- [ ]
+- <item>
 
 ### Out of Scope
-- [ ]
+- <item>
 
 ## Requirements
-- R1: [ ]
-- R2: [ ]
+- R1: <one sentence requirement>
+- R2: <one sentence requirement>
 
 ## Non-Requirements
-- NR1: [ ]
-- NR2: [ ]
+- NR1: <what we explicitly do NOT do>
 
-## Dependencies
-- Upstreams: [ ]
-- Downstreams: [ ]
+## Feature Dependencies
+- `<feature-key>`: <reason>
 
 ## Acceptance Criteria
-- AC1: [ ]
-- AC2: [ ]
-
-## Design Constraints
-[From background.md hard rules]
+- AC1: <testable condition>
+- AC2: <testable condition>
 
 ## Design Artifacts
-- API: [api/api.md#<feature-key>]
-- Storage: [storage/storage.md#<feature-key>]
-- Workflow: [workflow/workflow.md#<feature-key>]
-- Metrics: [metrics.md#<feature-key>]
-- Tasks: [tasks.md#<feature-key>]
-- Test Plan: [testplan/<feature-key>.md]
-
-## Spec
-- Location: spec/<feature-key>.spec.md
-- Readiness: NONE | DRAFT | READY
-
-## Related Records
-- Blockers: [blocker.md#<feature-key>]
+- API: api/api.md#<MethodName>
+- Storage: storage.md#<table_name>
+- Workflow: workflow/<feature-key>/workflow.md
+- Metrics: metrics.md#<feature-key>
+- Spec: spec/<feature-key>.spec.md
+- Tasks: tasks.md#<feature-key>
+- Test Plan: testplan/<feature-key>.md
 
 ## Changelog
-- YYYY-MM-DD (who): created
-- YYYY-MM-DD (who): revised [what/why]
+- YYYY-MM-DD (who): <one-line change description>

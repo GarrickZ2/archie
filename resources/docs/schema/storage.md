@@ -1,46 +1,32 @@
 # Storage
 
 ## Conventions
-- Primary DB: [ ]
-- Other stores: [ ]
-- Naming rules: [ ]
-- Migration strategy: [ ]
-- Retention/TTL rules: [ ]
-- PII / compliance rules: [ ]
+| Item | Value |
+|------|-------|
+| Primary DB | <MySQL/PostgreSQL/etc> |
+| Other stores | <Redis/ES/etc> |
+| Naming | <rules> |
+| Migration | <strategy> |
+| Retention/TTL | <rules> |
+| PII/Compliance | <rules> |
 
-## MySQL
+## Data: <table_name>
 
-### <feature-key>
+- Type: MySQL/Redis/etc
+- Purpose: <one sentence>
 
-#### Final Schema (Latest)
-##### Table: <table_name>
-- Purpose:
-- Primary key:
-- Indexes:
-- Access patterns:
+### Schema
+```sql
+CREATE TABLE ...
+```
 
-Columns:
-- <col_name> <type> [NULL/NOT NULL] [DEFAULT ...]
-    - Comment:
-    - Notes: (range/encoding)
-
-#### Change Plan
+### Change Plan
 - Action: CREATE | ALTER | DROP | BACKFILL
-- Steps:
-    1. ...
-    2. ...
-- Rollback:
-- Risk/Locking notes:
+- Steps: <numbered list>
+- Rollback: <plan>
+- Risk: <locking notes>
 
-#### Change Log (Append-only)
-- YYYY-MM-DD (who): <what changed> (links: MR/PR)
-
-## Redis (optional)
-
-### <feature-key>
-- Key patterns:
-- Value schema:
-- TTL / eviction:
-- Access patterns:
-- Failure/consistency notes:
-- Change Log:
+### Change Log
+<!-- ARCHIE:APPEND_ONLY -->
+- YYYY-MM-DD (who): <change> (MR/PR link)
+<!-- ARCHIE:END -->

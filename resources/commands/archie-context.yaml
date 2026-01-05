@@ -3,256 +3,46 @@ description: Intelligent information dispatcher - add context to appropriate fil
 tags: [context, information, dispatcher, smart-add]
 category: Archie
 content: |
-  ## Purpose
-  Accept free-form context/information from users and intelligently route it to the appropriate files (background.md, features/<key>.md, etc.) while maintaining schema compliance.
+  Route free-form information to appropriate files with schema compliance.
 
-  **User's Mental Model**: "I have information relevant to my project/feature, but I don't know where it should go or how to format it."
-
-  **Command's Role**: Analyze the information, suggest the best location(s), format it properly, and write it after user confirmation.
-
-  ### Allowed Status
-  - Any (can be used at any project stage)
-
-  ---
-
-  ## Workflow
-
-  ### Phase 1: Gather Information
-  Interactive dialogue with user:
-
-  #### Step 1: Get Context Information
-  - Ask: "What information do you want to add?"
-  - Accept free-form text (can be multiple paragraphs)
-  - Allow user to provide multiple pieces of information at once
-
-  #### Step 2: Identify Scope
-  - Ask: "Is this related to a specific feature, or is it project-wide context?"
-  - Options:
-    - Project-wide (global)
-    - Feature-specific (ask for feature key)
-    - Multiple features (ask which ones)
-    - Uncertain (AI will analyze)
-
-  ### Phase 2: Analyze & Route
-
-  #### Step 1: Content Analysis
-  AI analyzes the provided information to determine:
-
-  **Information Types** (detect patterns):
-  - Technical constraint (e.g., "we can't use Redis")
-  - Business rule (e.g., "discounts can't exceed 50%")
-  - Domain knowledge (e.g., "in our industry, checkout means...")
-  - Architecture decision (e.g., "we prefer event-driven design")
-  - Tech stack detail (e.g., "we use PostgreSQL 15")
-  - Code convention (e.g., "all errors must be logged")
-  - Dependency info (e.g., "payment service has 2s timeout")
-  - Feature requirement (e.g., "must support mobile browsers")
-  - Feature constraint (e.g., "can't modify existing API")
-  - Success criteria (e.g., "must achieve <200ms latency")
-
-  **Target Files** (based on information type):
-  - `background.md` → Project-wide context, conventions, tech stack
-  - `features/<key>.md` → Feature-specific requirements, constraints, scope
-  - `dependency.md` → External service dependencies
-  - `metrics.md` → Performance targets, SLI/SLO
-  - `storage.md` → Data model constraints
-  - `api/api.md` → API constraints, versioning rules
-
-  **Target Sections** (determine specific section within file):
-  - For background.md: Purpose, Tech Stack, Domain Context, Hard Rules, etc.
-  - For features/<key>.md: Summary, Requirements, Scope, Constraints, etc.
-
-  #### Step 2: Format Content
-  Transform user's free-form text into schema-compliant format:
-  - Match existing style and structure
-  - Add to appropriate section
-  - Maintain markdown formatting
-  - Preserve append-only sections (like changelog)
-
-  ### Phase 3: Present Suggestion
-
-  Show routing plan to user:
-  - File path
-  - Section name
-  - Formatted content to add
-  - Ask: "Would you like me to: (1) Apply all, (2) Apply some, (3) Cancel, (4) Edit first?"
-
-  Handle user response:
-  - If approve all → proceed to write
-  - If approve some → ask which ones
-  - If cancel → abort without writing
-  - If edit → allow user to modify content, re-present
-
-  ### Phase 4: Write After Approval
-
-  ONLY after explicit user approval:
-  1. Read each target file
-  2. Locate target section
-  3. Add formatted content (preserving schema structure)
-  4. Validate against schema
-  5. Write updated file
-  6. Update changelog if applicable (features/<key>.md only)
-
-  Report completion:
-  - List files updated
-  - Summary of additions
-  - Confirmation message
-
-  ---
-
-  ## Intelligent Routing Rules
-
-  ### Project-Wide Context → background.md
-
-  **Triggers**:
-  - "we use X technology"
-  - "our company policy is..."
-  - "all services must..."
-  - "project-wide constraint"
-  - "always / never" statements
-  - Technology stack mentions
-
-  **Target Sections**:
-  - Purpose: Business motivation, problem domain
-  - Tech Stack: Languages, frameworks, infrastructure
-  - Domain Context: Industry-specific knowledge
-  - Hard Rules / Conventions: Non-negotiable constraints
-  - Assumptions: Known unknowns
-
-  ### Feature-Specific Context → features/<key>.md
-
-  **Triggers**:
-  - "for feature X..."
-  - "this feature must/should..."
-  - "users expect..."
-  - Specific use cases
-  - Feature constraints
-
-  **Target Sections**:
-  - Summary: High-level description, motivation
-  - Scope: In scope / out of scope clarifications
-  - Requirements: Functional requirements
-  - Design Constraints: Technical limitations
-  - Acceptance Criteria: Success conditions
-
-  ### Dependency Info → dependency.md
-
-  **Triggers**:
-  - "X service has Y timeout"
-  - "we depend on..."
-  - "upstream/downstream service..."
-  - SLA mentions
-  - Integration points
-
-  ### Performance Targets → metrics.md
-
-  **Triggers**:
-  - "must be faster than..."
-  - "p99 latency should be..."
-  - "throughput requirements..."
-  - SLI/SLO mentions
-
-  ### Multi-Target Cases
-
-  When information applies to multiple locations:
-  - AI suggests all applicable locations
-  - User chooses which to apply
-
-  ---
-
-  ## Edge Cases & Handling
-
-  ### Ambiguous Information Type
-  If information could fit multiple interpretations:
-  - Present options to user
-  - Ask which interpretation matches their intent
-  - Apply user's choice
-
-  ### Multiple Features Affected
-  If context applies to multiple features:
-  - List all affected features
-  - Offer: All features, Project-wide, or User chooses specific features
-  - Apply based on user selection
-
-  ### Conflicting Information
-  If new context conflicts with existing content:
-  - Detect conflict
-  - Show both old and new information
-  - Ask user: Update existing, Rephrase new, or Cancel
-
-  ### Schema Violation Detection
-  If context should use a different command:
-  - Detect (e.g., API definition → should use `design`)
-  - Suggest appropriate command
-  - Offer to extract key points as constraints instead
-
-  ---
+  ## Guard Check
+  - Any status allowed
+  - Target files must exist (or suggest `init` first)
 
   ## Reads
-
-  - `background.md` (check existing context)
-  - `features/<key>.md` (if feature-specific)
-  - Schema templates from `.archie/docs/schema/` (for formatting)
-
-  ---
+  - background.md, glossary.md, features/<key>.md
+  - Schema templates for formatting
 
   ## Writes
+  - background.md, glossary.md, features/<key>.md
+  - dependency.md, metrics.md, storage.md, api/api.md
 
-  After user approval:
-  - `background.md` (project-wide context)
-  - `features/<key>.md` (feature-specific context + changelog)
-  - `dependency.md` (dependency info)
-  - `metrics.md` (performance targets)
-  - `storage.md` (data constraints)
-  - `api/api.md` (API constraints)
+  ## Workflow
+  1. Gather: ask what information to add, identify scope (project/feature)
+  2. Analyze: detect type (constraint, rule, domain knowledge, tech stack, etc.)
+  3. Route: suggest target file + section
+  4. Present: show formatted content → get approval
+  5. Write: add to file, update changelog if feature file
 
-  ---
+  ## Routing Rules
+
+  | Info Type | Target File |
+  |-----------|-------------|
+  | Tech stack, conventions | background.md |
+  | Service names, terms | glossary.md |
+  | Feature requirements | features/<key>.md |
+  | Dependencies, SLAs | dependency.md |
+  | Performance targets | metrics.md |
+  | Data constraints | storage.md |
 
   ## Core Rules
-
-  1. **User Approval Required** - Always show routing suggestions and get explicit approval before writing
-  2. **Schema Compliance** - All content must be formatted to match target file's schema
-  3. **Conflict Detection** - Warn user if information conflicts with existing content
-  4. **Preserve Structure** - Maintain existing file organization and append-only sections
-  5. **Traceability** - Update changelog for feature files (not background.md per convention)
-  6. **No Guessing** - If information type is ambiguous, ask user for clarification
-  7. **Suggest Better Commands** - If user's context is better suited for another command, suggest it
-
-  ---
+  - User approval required
+  - Schema compliance mandatory
+  - Detect conflicts with existing content
+  - If complex → suggest `design` command instead
+  - If question → suggest `ask` command
 
   ## Correction Behavior
-
-  ### If file structure is missing:
-  - Warn: "Target file doesn't exist. Run `archie init` first."
-  - Do not proceed with write
-
-  ### If feature doesn't exist:
-  - Suggest: "Feature '<key>' not found. Use `archie revise --create <key>` to create it first."
-  - Offer to create feature if user confirms
-
-  ### If information is too complex:
-  - Suggest: "This looks like a full design. Consider using `archie design <feature>` for structured design workflow."
-  - Offer to extract key points as constraints
-
-  ### If information is a question:
-  - Redirect: "This looks like a question. Use `archie ask` for querying existing docs."
-  - Do not write to files
-
-  ---
-
-  ## When to Use Context
-
-  **Use `archie context` when**:
-  - You have a quick piece of information to add
-  - You're not sure where it should go
-  - You don't want to go through full review/design workflow
-  - Information is supplementary/context (not core requirements)
-
-  **Use other commands when**:
-  - Full feature review → `archie review`
-  - Technical design → `archie design`
-  - Spec generation → `archie spec`
-  - Asking questions → `archie ask`
-  - Modifying requirements → `archie revise`
-
-  ---
+  - File missing → suggest `init`
+  - Feature missing → suggest `revise --create`
+  - Too complex → suggest `design`

@@ -3,90 +3,44 @@ description: Refine business requirements through iterative dialogue
 tags: [revise, requirements, refinement]
 category: Archie
 content: |
-  ### Purpose
   Refine business requirements at any stage through user dialogue.
-  Primary operation: Modify (iterate on requirements with user).
 
-  ### Operations
+  ## Guard Check
+  - Any status allowed
+  - Required: features/<key>.md exists (for modify/merge/split/delete)
+  - For create: no existing feature with same key
 
-  #### Modify (Default) - Business Requirement Refinement
+  ## Reads
+  - background.md, glossary.md, features/<key>.md, blocker.md
 
-  Workflow:
-  1. Understand Change Intent
-     - Ask: What needs to change? Why?
-     - Ask: What's unclear or incorrect?
+  ## Writes
+  - features/<key>.md (Requirements, Scope, Feature Dependencies, Acceptance Criteria)
+  - blocker.md, assets/archive/features/ (for delete)
 
-  2. Business Context Discussion
-     - Ask: Has business goal changed?
-     - Ask: New use cases or constraints?
-     - Discuss: Scope adjustments needed?
+  ## Operations
 
-  3. Refine Requirements
-     - Iteratively clarify with user:
-       - Functional scope
-       - Business logic
-       - Acceptance criteria
+  ### Modify (Default)
+  1. Ask: what needs to change? why?
+  2. Discuss: scope, business logic, acceptance criteria
+  3. Present proposed changes → get approval
+  4. Write changes + changelog
 
-  4. Present Proposed Changes
-     - Show what will be updated in features/<feature-key>.md
-     - Show proposed changelog entry
-     - Ask user: "Should I apply these changes?"
+  ### Create
+  1. Ask: business goal, use cases, scope
+  2. Present feature file → get approval
+  3. Write features/<key>.md with Status: NOT_REVIEWED
 
-  5. Document Changes After Approval
-     - ONLY after explicit user approval:
-       - Update features/<feature-key>.md
-       - Update changelog (requirement changes, rationale)
-       - Report completion summary
+  ### Merge
+  Combine features. Get approval → merge files → archive original
 
-  #### Create
-  Add new feature through business dialogue.
+  ### Split
+  Decompose feature. Get approval → create new files → update original
 
-  Workflow:
-  1. Collect Information
-     - Ask: What's the business goal?
-     - Ask: Key use cases?
-     - Ask: Functional scope?
+  ### Delete
+  Archive feature. Extra confirmation if >= SPEC_READY
+  Archive to assets/archive/features/
 
-  2. Present New Feature
-     - Show proposed feature file content
-     - Ask user: "Should I create this feature?"
-
-  3. Create Feature File After Approval
-     - ONLY after explicit user approval:
-       - Write features/<feature-key>.md
-       - Status: NOT_REVIEWED
-       - Report completion
-
-  #### Merge / Split / Delete
-
-  **All operations require explicit user approval before execution.**
-
-  **Merge**: Combine features, reconcile requirements if >= DESIGNED
-  1. Discuss business rationale with user
-  2. Show how requirements will be combined
-  3. Get approval before merging
-
-  **Split**: Decompose feature, redistribute requirements if >= DESIGNED
-  1. Discuss decomposition strategy with user
-  2. Show how requirements will be redistributed
-  3. Get approval before splitting
-
-  **Delete**: Archive feature (extra confirmation if >= SPEC_READY)
-  1. Discuss business impact with user
-  2. Show what will be archived and where
-  3. For features >= SPEC_READY: Ask for extra confirmation
-  4. Get explicit approval before archiving
-
-  ### Reads
-  - background.md, features/<feature-key>.md, blocker.md
-
-  ### Writes
-  - features/<feature-key>.md (Requirements, Scope, Logic, Acceptance Criteria)
-  - blocker.md
-  - assets/archive/features/ (for delete)
-
-  ### Core Rules
-  1. **Business dialogue first** - Discuss with user before making changes
-  2. **Traceability** - Document what changed in requirements and why
-  3. **Status integrity** - Roll back status if requirements become incomplete
-  4. **Iterative refinement** - Multiple revise cycles expected and encouraged
+  ## Core Rules
+  - Business dialogue first
+  - Traceability: document what changed and why
+  - Roll back status if requirements become incomplete

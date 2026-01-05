@@ -1,83 +1,82 @@
 # Spec: <feature-key>
 
 ## Goal
-[What this spec enables]
+<What this spec enables - 1 sentence>
 
 ## Non-Goals
-[Explicitly not covered]
+<Explicitly not covered>
 
 ## Background
-[Short context from feature/background.md]
+<Short context - 2-3 sentences>
 
 ## Interfaces
 
-### API / RPC
-- IDL location: [ ]
+### API/RPC
+- IDL: api/<Service>.thrift
 - Methods:
-  - <method>:
-    - Request: [ ]
-    - Response: [ ]
-    - Errors: [ ]
+  - <MethodName>: <brief description>
+    - Request: <key fields>
+    - Response: <key fields>
+    - Errors: <error codes>
 
-### Events / Async
-- Topic / stream: [ ]
-- Payload: [ ]
-- Ordering / retry: [ ]
+### Events/Async
+- Topic: <topic name>
+- Payload: <key fields>
+- Ordering/retry: <strategy>
 
 ## Data Model
 
 ### Entities
-- <entity>:
-  - Fields: [ ]
-  - Constraints: [ ]
-  - Lifecycle: [ ]
+- <Entity>: <fields>, <constraints>, <lifecycle>
 
 ### Storage
-- Tables / collections: [ ]
-- Indexes: [ ]
-- Migration plan: [ ]
+- Tables: <list>
+- Indexes: <list>
+- Migration: <plan>
 
 ## Workflow
 
 ### Main Flow
-- [ ]
+<Step-by-step flow>
 
 ### Edge Cases
-- Case: [ ]
-- Handling: [ ]
+| Case | Handling |
+|------|----------|
+| <case> | <handling> |
 
 ### Failure & Retry
-- Idempotency strategy: [ ]
-- Retry policy: [ ]
-- Timeout / circuit breaker: [ ]
+- Idempotency: <strategy>
+- Retry: <policy>
+- Timeout: <value>
 
 ## Observability
 
 ### Metrics
-- <metric-name>: [description]
+| Metric | Description |
+|--------|-------------|
+| <name> | <description> |
 
 ### Logs
-- Key logs: [ ]
+<Key log points>
 
 ### Traces
-- Trace boundaries: [ ]
+<Trace boundaries>
 
-## Security & Compliance
-- AuthN/AuthZ: [ ]
-- Data sensitivity: [ ]
-- Audit needs: [ ]
+## Security
+- AuthN/AuthZ: <approach>
+- Data sensitivity: <classification>
+- Audit: <requirements>
 
-## Rollout Plan
-- Feature flag: [ ]
-- Canary: [ ]
-- Rollback: [ ]
+## Rollout
+- Feature flag: <name>
+- Canary: <strategy>
+- Rollback: <plan>
 
 ## Test Plan
-- Unit test coverage: [list key unit tests or link to test plan]
-- Integration test scenarios: [list key integration flows or link to test plan]
-- E2E test scenarios: [list critical user journeys or link to test plan]
-- Detailed test plan: [testplan/<feature-key>.md]
+- Unit: <key tests>
+- Integration: <key flows>
+- E2E: <key journeys>
+- Detail: testplan/<feature-key>.md
 
 ## Changelog
-- YYYY-MM-DD (who): created
-- YYYY-MM-DD (who): revised
+- YYYY-MM-DD (who): <one-line description>

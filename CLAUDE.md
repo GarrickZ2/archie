@@ -1,136 +1,140 @@
 # Archie
 
-**Archie** is a docs-first AI CLI that helps engineers turn vague ideas into clear, executable technical designs — and keep projects moving with structure and discipline.
+Archie is a docs-first AI CLI that helps engineers turn vague ideas into clear, executable technical designs.
 
-Archie is not a coding tool.  
-It is a **design, specification, and execution-orchestration system** built on Markdown files.
+Archie is NOT a coding tool. It is a design, specification, and execution-orchestration system built on Markdown files.
 
----
+## Project Architecture
 
-## Why Archie?
-
-Most projects fail before coding starts:
-
-- requirements are unclear,
-- designs are scattered,
-- decisions are lost in chat,
-- progress is hard to track.
-
-Archie fixes this by enforcing:
-
-- 📄 **Docs as Source of Truth**
-- 🔄 **A strict feature state machine**
-- 🧠 **AI-assisted review, design, and spec generation**
-- 📦 **Everything stored locally, in Markdown**
-- 🧩 **Composable sub-agents for API, workflow, storage, metrics, tasks**
-
----
-
-## Core Idea
-
-Archie treats a **feature** as the atomic unit and enforces the minimum design chain:
-
-> **Feature → Workflow → Spec**
-
-Everything else (API, storage, metrics, tasks, deployment notes) supports this chain.
-
----
-
-## What Archie Does
-
-With Archie you can:
-
-- Initialize a project from scratch or messy notes
-- Review features and clarify requirements
-- Design workflows, APIs, storage, and observability
-- Generate coding-ready specs
-- Track blockers, tasks, and progress
-- Export clean documentation bundles
-
-All via a CLI.
-
----
-
-## Example Workflow
-
-```bash
-archie init
-archie review checkout-discount
-archie design checkout-discount
-archie spec checkout-discount
-archie update-progress checkout-discount --note "Implementation started"
-```
-
----
-
-## Project Structure (Simplified)
+### Core Components
 
 ```
-.
-├── background.md
-├── features/
-│   └── checkout-discount.md
-├── workflow/
-│   └── checkout-discount/
-├── spec/
-│   └── checkout-discount.spec.md
-├── tasks.md
-├── metrics.md
-└── api/
+cmd/           → CLI entry points (init, review, design, spec, etc.)
+internal/      → Core logic
+  status/      → Feature status parsing and display
+  export/      → Documentation export and bundling
+resources/     → AI context files
+  agents/      → AGENTS.md - role definition and constraints
+  docs/        → schema.md + schema/*.md - output format specs
+  commands/    → archie-*.yaml - command workflows
 ```
 
----
+### Key Files
 
-## Key Concepts
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | AI role, state machine, output discipline |
+| `schema.md` | Document structure rules |
+| `schema/*.md` | Templates for each document type |
+| `archie-*.yaml` | Command workflows with guard checks |
 
-### Commands
+## Design Principles
 
-High-level orchestrators:
+### Feature State Machine
 
-- `init`
-- `review`
-- `design`
-- `spec`
-- `update-progress`
+```
+NOT_REVIEWED → [review] → UNDER_REVIEW → READY_FOR_DESIGN
+READY_FOR_DESIGN → [design] → UNDER_DESIGN → DESIGNED
+DESIGNED → [spec] → SPEC_READY
+SPEC_READY → [plan] → IMPLEMENTING → FINISHED
+Any → BLOCKED (if unchecked blocker exists)
+```
 
-### Subagents
+### Minimum Design Chain
 
-Specialized capability units:
+**Feature → Workflow → Spec**
 
-- Workflow Designer
-- API Designer
-- Storage Designer
-- Metrics Designer
-- Task Manager
+Other artifacts (API, storage, metrics) support this chain but are not strictly required.
 
-### Templates
+## Code Requirements
 
-Archie uses a lightweight template system so teams can customize document structure while keeping it machine-parseable.
+### Go Code Style
 
----
+- Follow standard Go conventions (gofmt, golint)
+- Error handling: wrap errors with context using `fmt.Errorf("context: %w", err)`
+- Logging: use structured logging
+- Naming: clear, descriptive names; avoid abbreviations
 
-## Who Is This For?
+### Documentation Files
 
-- Backend / Full-stack engineers
-- Tech leads
-- Early-stage startups
-- Infra & platform teams
-- Anyone tired of chaotic design docs
+When generating or modifying Archie documentation:
 
----
+1. **Conciseness**: Record only key decisions, not thought processes
+2. **Field Limits**:
+   - One-liner: max 80 chars
+   - Summary items: 2-3 sentences
+   - Requirements: 1 sentence each
+   - Changelog: 1 line per entry
+3. **Forbidden Content**:
+   - Thought processes ("after consideration...")
+   - Redundant modifiers ("very important", "please note")
+   - Duplicated information across files
+   - Obvious explanations
 
-## Philosophy
+### Command YAML Structure
 
-- Local-first
-- Markdown-native
-- Deterministic over magical
-- Explicit over implicit
-- Humans stay in control
+Each command file follows:
 
----
+```yaml
+title: <CommandName>
+description: <one-line description>
+content: |
+  <purpose - one line>
 
-## Status
+  ## Guard Check
+  - Status MUST be: <allowed statuses>
+  - Required: <files that must exist>
 
-Archie is under active design and early development.
+  ## Reads
+  - <files to read>
 
-Contributions, feedback, and ideas are welcome.
+  ## Writes
+  - <files to write>
+
+  ## Workflow
+  <numbered steps>
+
+  ## Core Rules
+  <key constraints>
+```
+
+### Schema File Structure
+
+- Use `<placeholder>` format, not `[ ]`
+- Use tables for structured data
+- No `---` separators between sections
+- Minimal prose, focus on structure
+
+## Testing
+
+Run tests: `go test ./...`
+Build: `go build -o archie .`
+
+## Common Tasks
+
+### Adding a New Command
+
+1. Create `resources/commands/archie-<name>.yaml`
+2. Add guard check, reads/writes, workflow steps
+3. Register in command registry (cmd/)
+
+### Modifying Schema
+
+1. Update `resources/docs/schema/<file>.md`
+2. Update `resources/docs/schema.md` lookup table if needed
+3. Ensure commands reference the correct schema
+
+### State Machine Changes
+
+1. Update AGENTS.md Feature State Model
+2. Update guard checks in affected commands
+3. Verify state transitions are valid
+
+## Output Quality Checklist
+
+Before writing any documentation:
+
+- Can half the content be removed without losing key info?
+- Is there content duplicated from other files?
+- Are there explanations instead of decisions?
+- Does it follow the schema template exactly?

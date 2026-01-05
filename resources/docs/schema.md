@@ -1,20 +1,10 @@
 # SCHEMA.md
 
-This document defines **how Archie documents work as a system**:
-- what each workspace file is for,
-- when you should edit it,
-- which schema template to follow,
-- and the constraints Archie enforces.
+Defines how Archie documents work as a system.
 
-All schema templates live under:
+All schema templates: `.archie/docs/schema/`
 
-```
-.archie/docs/schema/
-```
-
----
-
-## 1. Schema Lookup Rules (Quick Index)
+## 1. Schema Lookup Rules
 
 When writing or editing a workspace file, consult the corresponding schema file.
 
@@ -33,6 +23,7 @@ When writing or editing a workspace file, consult the corresponding schema file.
 
 | Workspace File | Schema File |
 |----------------|------------|
+| `glossary.md` | `.archie/docs/schema/glossary.md` |
 | `features/README.md` | `.archie/docs/schema/feature_readme.md` |
 | `features/<feature-key>.md` | `.archie/docs/schema/feature.md` |
 | `spec/<feature-key>.spec.md` | `.archie/docs/schema/spec.md` |
@@ -61,8 +52,6 @@ Notes:
 |----------------|------------|
 | `testplan/<feature-key>.md` | `.archie/docs/schema/testplan.md` |
 
----
-
 ## 2. Folder Structure Contracts
 
 ### 2.1 `features/`
@@ -73,25 +62,26 @@ features/
 ```
 
 ### 2.2 `workflow/`
-Required (minimum):
+Required:
 ```
 workflow/
   <feature-key>/
     workflow.md
-    main.mmd
 ```
 
-Optional diagrams:
+Optional diagrams (naming should reflect function):
 ```
 workflow/
   <feature-key>/
-    state.mmd
-    sequence.mmd
+    state.mmd        # state machine diagram
+    sequence.mmd     # sequence diagram
+    flowchart.mmd    # flowchart diagram
 ```
 
 Constraints:
-- Every feature must have workflow.md and main.mmd
-- Mermaid diagrams must be rendered without syntax errors
+- Every feature MUST have workflow.md
+- Diagram files are optional, naming should reflect their purpose
+- Mermaid diagrams must be valid syntax
 
 ### 2.3 `api/`
 Required:
@@ -138,5 +128,3 @@ Constraints:
 - Every feature should have testplan after design phase
 - Test case IDs must follow convention: <feature-key>-{U|I|E}-<###>
 - Simple checklist format with minimal fields
-
----

@@ -1,18 +1,17 @@
 # Tasks
 
-## By Feature
+## <feature-key>
 
-### <feature-key>
+### T-<id>: <task title>
+- Status: [ ] TODO / [>] DOING / [x] DONE
+- Owner: <name>
+- ETA: <date>
+- Depends on: <task IDs>
+- Links: <spec/api/storage/workflow/PR>
+- Description: <one sentence>
+- Deliverable: <what's done when complete>
 
-#### T-<id>: <task title>
-- [ ] Status
-- Owner: [ ]
-- ETA: [ ]
-- Depends on: [ ]
-- Links: [spec/api/storage/workflow/PR/MR]
-- Description: [ ]
-- Deliverable: [ ]
-
-##### Log
-- YYYY-MM-DD (who): created
-- YYYY-MM-DD (who): [update]
+#### Log
+<!-- ARCHIE:APPEND_ONLY -->
+- YYYY-MM-DD (who): <update>
+<!-- ARCHIE:END -->

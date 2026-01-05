@@ -3,98 +3,48 @@ description: Initialize Archie project workspace and normalize existing document
 tags: [initialize, setup, workspace]
 category: Archie
 content: |
-  ## Purpose
   Bootstrap an Archie project workspace by normalizing content into Archie schemas.
 
+  ## Guard Check
+  - No status requirement (can run anytime)
+  - If workspace already initialized → warn user, ask if re-init intended
+
   ## Inputs
+  Minimum: Project name + feature list (or background text to derive features)
+  Optional: Timeline, tech stack, design rules, stakeholders, existing docs
 
-  ### User Inputs (Interactive)
-  Minimum required:
-  - Project name (optional but recommended)
-  - A list of features (names/keys) **or** enough background text for Archie to derive a feature list
+  ## Reads
+  - background.md, glossary.md (if present)
+  - Existing feature notes, PRD, design docs (if present)
 
-  Optional but strongly recommended:
-  - Timeline / milestones
-  - Tech stack
-  - Design hard rules (e.g., "Thrift only")
-  - Stakeholders / owners
-  - Any existing docs or links that should be referenced
-
-  ### Files (If Present)
-  `init` may read and reuse existing content from:
-  - `background.md` (if present)
-  - any existing feature notes (if present)
-  - any existing "requirements"/"prd"/"design" markdown files (if present)
-
-  ---
-
-  ## Outputs (Files Created/Updated)
-
-  `init` must ensure the workspace contains (at minimum):
-
-  ### Top-level
-  - `background.md`
-
-  ### Features
-  - `features/<feature-key>.md` (one per feature)
-
-  ---
+  ## Writes
+  - background.md, glossary.md
+  - features/<key>.md (one per feature)
 
   ## Workflow
 
-  ### Phase 1: Gather Information
-  Interactively collect from user:
-  - Project name (optional but recommended)
-  - List of features (or read from existing docs/background)
-  - Timeline / milestones (optional)
-  - Tech stack
-  - Design hard rules
-  - Stakeholders / owners
-  - Existing docs to reference
+  ### 1. Gather Information
+  Collect: project name, features, tech stack, design rules, stakeholders
+  Collect: service names, upstream/downstream systems, key terms → for glossary.md
 
-  ### Phase 2: Plan Initialization
-  Analyze current workspace and plan:
-  1. Identify files to create (background.md, features/<key>.md)
-  2. Identify files to normalize (existing docs → Archie schema)
-  3. Determine feature set (from user input or derived from docs)
+  ### 2. Plan
+  - Files to create (background.md, glossary.md, features/*.md)
+  - Files to normalize (existing docs → schema)
+  - Feature set
 
-  ### Phase 3: Present Plan to User
-  Show initialization plan:
-  - Files to be created (with template previews)
-  - Files to be normalized (show: original → Archie schema)
-  - Feature files to be generated
-  - Where legacy content will be preserved (if applicable)
+  ### 3. User Approval
+  Show plan → ask confirmation
 
-  Ask user: "Should I proceed with this initialization plan?"
+  ### 4. Execute After Approval
+  - Create background.md, glossary.md
+  - Create features/<key>.md with Status: NOT_REVIEWED
+  - Preserve legacy content in assets/refs/
+  - Validate schema compliance
 
-  ### Phase 4: Execute After Approval
-  ONLY after explicit user approval:
-  1. **Create Missing Files** - Create required files/directories with standard templates
-  2. **Normalize Existing Content** - Preserve original (copy to "Legacy" section or `assets/refs/`), rewrite to Archie schema
-  3. **Generate Feature Files** - Create features/<key>.md for each feature
-  4. **Assign Initial Status** - Set all features to `NOT_REVIEWED`
-  5. **Validate Compliance** - Ensure all files follow `.archie/docs/schema.md`
-
-  ### Phase 5: Report Completion
-  - Summarize what was created/modified
-  - Show feature registry
-  - Suggest next steps (e.g., "Run `archie review <feature-key>` to start")
-
-  ## Behavior Requirements
-
-  1. **User Confirmation Required** - Must show initialization plan and get approval before any file operations
-  2. **Format Compliance** - All operations must strictly follow `.archie/docs/schema.md`. Schema validation is mandatory.
-  3. **Preserve Existing Content** - When normalizing, preserve original content in "Legacy" section or `assets/refs/`
-  4. **Correction Mode** - Refuse write commands (review/design/spec/etc) until `init` succeeds. Read-only commands (ask) are allowed.
-
-  ---
+  ### 5. Report
+  Summary + suggest `archie review <key>`
 
   ## Success Criteria
-
-  `init` succeeds only if:
-  - All required files exist
-  - Feature registry exists and lists at least one feature (unless user explicitly says "no features yet")
-  - Each feature has a file scaffold
-  - No destructive loss of existing user content occurred (legacy preserved)
-
-  ---
+  - background.md, glossary.md exist
+  - At least one feature file exists
+  - No content loss (legacy preserved)

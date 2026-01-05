@@ -19,12 +19,24 @@ const (
 
 // Display 负责展示状态信息
 type Display struct {
-	summary *Summary
+	summary  *Summary
+	features []Feature
 }
 
 // NewDisplay 创建展示器
 func NewDisplay(summary *Summary) *Display {
-	return &Display{summary: summary}
+	return &Display{
+		summary:  summary,
+		features: []Feature{},
+	}
+}
+
+// NewDisplayWithFeatures 创建带 features 的展示器（用于依赖图）
+func NewDisplayWithFeatures(summary *Summary, features []Feature) *Display {
+	return &Display{
+		summary:  summary,
+		features: features,
+	}
 }
 
 // Show 展示完整的状态报告
@@ -48,6 +60,12 @@ func (d *Display) Show() {
 	if len(d.summary.StaleFeatures) > 0 {
 		fmt.Println()
 		d.showStaleFeatures()
+	}
+
+	// 显示依赖图（如果有 features 数据）
+	if len(d.features) > 0 {
+		fmt.Println()
+		d.showDependencyGraph()
 	}
 
 	fmt.Println()
@@ -290,6 +308,16 @@ func (d *Display) getPercentage(count int) float64 {
 		return 0
 	}
 	return float64(count*100) / float64(d.summary.TotalFeatures)
+}
+
+// showDependencyGraph 显示依赖图
+func (d *Display) showDependencyGraph() {
+	if len(d.features) == 0 {
+		return
+	}
+	graph := BuildDependencyGraph(d.features)
+	display := NewDependencyGraphDisplay(graph)
+	display.Show()
 }
 
 // ShowCompact 显示紧凑版本的状态报告

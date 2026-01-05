@@ -1,78 +1,79 @@
 # Project Context
 
 ## Purpose
-[Problem solved, target users, motivation]
+<Problem solved, target users, motivation - 2-3 sentences>
 
 ## Success Criteria
-[Measurable outcomes]
+<Measurable outcomes>
 
 ## Tech Stack
-- Language / Runtime: [ ]
-- Frameworks: [ ]
-- API / RPC: [ ]
-- Storage: [ ]
-- Messaging / Async: [ ]
-- Observability: [ ]
-- CI / CD: [ ]
-- Deployment Platform: [ ]
+| Category | Choice |
+|----------|--------|
+| Language/Runtime | <value> |
+| Frameworks | <value> |
+| API/RPC | Thrift/Protobuf |
+| Storage | <value> |
+| Messaging | <value> |
+| Observability | <value> |
+| CI/CD | <value> |
+| Deployment | <value> |
 
 ## Project Conventions
 
 ### Code Style
-- Naming conventions: [ ]
-- Error handling style: [ ]
-- Logging conventions: [ ]
-- Formatting rules: [ ]
+- Naming: <convention>
+- Error handling: <style>
+- Logging: <convention>
 
 ### Architecture Patterns
-- Overall architecture style: [ ]
-- Service boundaries: [ ]
-- Synchronous vs asynchronous preferences: [ ]
-- Idempotency rules: [ ]
+- Style: <monolith/microservices/etc>
+- Service boundaries: <rules>
+- Sync vs async: <preference>
+- Idempotency: <rules>
 
-### API / Contract Rules
-- IDL format: [ ]
-- Backward compatibility requirements: [ ]
-- Versioning strategy: [ ]
-- Error model: [ ]
+### API/Contract Rules
+- IDL format: <Thrift/Protobuf>
+- Compatibility: <rules>
+- Versioning: <strategy>
+- Error model: <approach>
 
 ### Testing Strategy
-- Required test types: [ ]
-- Coverage expectations: [ ]
-- Mocking vs real dependencies: [ ]
+- Required types: <unit/integration/e2e>
+- Coverage: <expectations>
+- Dependencies: <mock/real>
 
-### Git / Delivery Workflow
-- Branching strategy: [ ]
-- Commit message conventions: [ ]
-- PR / MR requirements: [ ]
-- Release cadence: [ ]
+### Git/Delivery
+- Branching: <strategy>
+- Commits: <convention>
+- PR/MR: <requirements>
+- Release: <cadence>
 
 ## Domain Context
-[Domain-specific knowledge that cannot be inferred from code alone: core business concepts, key entities, invariants, edge cases, pitfalls]
+<Domain-specific knowledge: core concepts, key entities, invariants, edge cases>
 
-## Important Constraints
+## Constraints
 
-### Technical Constraints
-- Performance limits: [ ]
-- Scale assumptions: [ ]
-- Legacy system limitations: [ ]
+### Technical
+- Performance: <limits>
+- Scale: <assumptions>
+- Legacy: <limitations>
 
-### Business Constraints
-- Deadlines: [ ]
-- Cost limits: [ ]
-- Risk tolerance: [ ]
+### Business
+- Deadlines: <dates>
+- Cost: <limits>
+- Risk: <tolerance>
 
-### Compliance / Security Constraints
-- PII handling: [ ]
-- Regulatory requirements: [ ]
-- Audit requirements: [ ]
+### Compliance/Security
+- PII: <handling>
+- Regulatory: <requirements>
+- Audit: <requirements>
 
 ## Assumptions
 <!-- ARCHIE:APPEND_ONLY -->
-- YYYY-MM-DD: [assumption]
+- YYYY-MM-DD: <assumption>
 <!-- ARCHIE:END -->
 
 ## Open Questions
 <!-- ARCHIE:APPEND_ONLY -->
-- YYYY-MM-DD: [question]
+- YYYY-MM-DD: <question>
 <!-- ARCHIE:END -->

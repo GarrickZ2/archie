@@ -1,106 +1,41 @@
 title: Test Plan
-description: Generate simple test case checklists for designed features
+description: Generate test case checklists for designed features
 tags: [test, testing, test-plan, quality]
 category: Archie
 content: |
-  ## Purpose
-  Generate simple test case checklists from workflow paths and spec requirements.
+  Generate test case checklists from workflow paths and spec requirements.
 
-  ---
+  ## Guard Check
+  - Status MUST be: `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
+  - If status < DESIGNED → STOP
 
-  ## Allowed Status
-  - `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
+  ## Reads
+  - features/<key>.md, workflow/<key>/*, spec/<key>.spec.md
 
-  Cannot generate test plan if status < `DESIGNED`.
-
-  ---
+  ## Writes
+  - testplan/<key>.md
+  - features/<key>.md (Design Artifacts testplan link + changelog)
 
   ## Operations
 
   ### Generate
-  Create initial test plan from design artifacts.
-
-  - **Input**: Feature key
-  - **Output**: `testplan/<key>.md`
-  - **Source**: Workflow paths, API endpoints, spec requirements
-
-  **Workflow**:
-  1. Generate test cases from workflow paths, API endpoints, and spec
-  2. Present test plan to user:
-     - Show total test count (Unit/Integration/E2E breakdown)
-     - Highlight critical path coverage
-     - Show failure scenario mapping
-  3. Ask user: "Does this test plan cover all important cases? Any missing scenarios?"
-  4. Apply user feedback if needed (add/remove test cases)
-  5. Get explicit approval before writing
-  6. Write testplan/<key>.md and update features/<key>.md
-  7. Report completion with test coverage summary
+  Create test plan from design artifacts.
+  1. Parse workflow paths, API endpoints, spec requirements
+  2. Generate test cases (Unit/Integration/E2E)
+  3. Present to user → get approval → write
 
   ### Update
   Refresh test cases based on design changes.
-
-  - **Input**: Updated artifacts
-  - **Output**: Updated test cases
-  - **Preserves**: Existing test execution status
-
-  **Workflow**:
-  1. Compare current artifacts vs existing test plan
-  2. Identify new paths/requirements needing test coverage
-  3. Present proposed additions/changes to user
-  4. Get approval before writing updates
-
-  ---
-
-  ## Reads/Writes
-
-  **Reads**: `features/<key>.md`, `workflow/<key>/*`, `spec/<key>.spec.md`
-
-  **Writes**:
-  - `testplan/<key>.md`
-  - `features/<key>.md` (Design Artifacts testplan link + changelog entry for testplan generation)
-
-  ---
+  Compare artifacts vs existing plan → propose additions → get approval
 
   ## Test Plan Structure
-
-  Each test plan includes:
-  - **Test Cases**: Simple checklist with ID, description, priority, reference, expected result
-  - **Failure Scenarios** (optional): Error paths with test coverage mapping
-
-  Format:
-  - Test ID: `<feature-key>-{U|I|E}-<###>` (Unit/Integration/E2E)
+  - Test ID: `<key>-{U|I|E}-<###>`
   - Priority: P0 (critical), P1 (important), P2 (nice-to-have)
   - Status: [ ] TODO, [x] DONE
-
-  ---
+  - Reference: link to workflow/spec section
 
   ## Core Rules
-
-  1. **Workflow coverage** - All main workflow paths should have corresponding test cases
-  2. **Failure scenarios** - Critical error paths should be documented
-  3. **Traceability** - Every test case links to workflow/spec section
-  4. **Simplicity** - Keep test descriptions brief and actionable
-
-  ---
-
-  ## Orchestrator Steps
-
-  1. Validate feature status (>= `DESIGNED`)
-  2. Check if testplan exists:
-     - Missing → generate from artifacts (follow Generate workflow with user approval)
-     - Exists → proceed to update (follow Update workflow with user approval)
-  3. Execute operation:
-     - **Generate**:
-       - Parse workflow paths from workflow/*.mmd
-       - Extract key requirements from spec
-       - Generate test case list (Unit/Integration/E2E)
-       - Map failure scenarios from workflow error paths
-       - Present to user and get approval
-       - Write testplan/<key>.md after approval
-     - **Update**:
-       - Compare current artifacts vs existing test plan
-       - Identify new paths/requirements
-       - Present proposed changes to user
-       - Get approval before writing updates
-  4. Update features/<key>.md (Design Artifacts testplan link + changelog)
-  5. Report: test count, critical paths covered, completion summary
+  - All main workflow paths have test cases
+  - Critical error paths documented
+  - Every test links to source
+  - Keep descriptions brief and actionable

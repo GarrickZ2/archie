@@ -3,77 +3,51 @@ description: Gather technical requirements and produce design artifacts
 tags: [design, architecture, artifacts]
 category: Archie
 content: |
-  ### Purpose
-  Gather technical requirements through iterative dialogue and produce design artifacts.
+  Gather technical requirements through dialogue and produce design artifacts.
 
-  ### Allowed Status
-  `READY_FOR_DESIGN`, `UNDER_DESIGN`
+  ## Guard Check
+  - Status MUST be: `READY_FOR_DESIGN`, `UNDER_DESIGN`
+  - Required: features/<key>.md with completed requirements
+  - If BLOCKED/NOT_REVIEWED → STOP, instruct `review` first
 
-  ### Workflow
-
-  #### 1. Explore Technical Documents
-  Read and understand existing architecture: api/api.md, storage.md, dependency.md, workflow/*, metrics.md, architecture.md (if exists)
-
-  #### 2. Gather Architecture Context (Iterative)
-  Ask user until ALL information is clear:
-  - **Actors**: Who will use this? (users, services, systems)
-  - **Dependencies**: What upstream services/APIs needed?
-  - **Service**: Which service implements this? (existing or new)
-  - **API Requirements**: What interfaces needed?
-  - **Storage Requirements**: What data to store?
-  - **Technical Constraints**: Performance, security, compliance?
-
-  Continue until no confusion remains and user confirms completeness.
-
-  #### 3. Design Workflow (Interactive)
-  - Ask user to describe complete flow step by step
-  - Ask about failure scenarios, retry/idempotency requirements
-  - Generate workflow diagrams based on description
-  - Present to user and get explicit approval before proceeding
-
-  #### 4. Design API (Interactive)
-  - Ask about methods/endpoints needed
-  - Ask about request/response structures and error handling
-  - Present proposed API design
-  - Get explicit approval before proceeding
-
-  #### 5. Design Storage (Interactive)
-  - Ask about tables/collections needed
-  - Ask about schema (columns, types, indexes) and migration plan
-  - Present proposed storage design
-  - Get explicit approval before proceeding
-
-  #### 6. Design Metrics (Interactive)
-  - Ask about success metrics, alerts needed, SLI/SLO targets
-  - Present proposed metrics design
-  - Get explicit approval, then proceed to write artifacts
-
-  #### 7. Write Design Artifacts
-  After all interactive steps approved:
-  - Write all design artifact files
-  - Update features/<feature-key>.md (Design Artifacts links ONLY, set Status: DESIGNED)
-  - Update dependency.md (if dependencies changed)
-  - Report completion summary
-
-  ### Reads
-  - background.md, features/<feature-key>.md
+  ## Reads
+  - background.md, glossary.md, features/<key>.md
   - api/api.md, storage.md, dependency.md, workflow/*, metrics.md
-  - architecture.md (if exists)
 
-  ### Writes
-  - api/api.md, api/<service>.thrift
-  - storage.md
-  - workflow/<feature-key>/workflow.md, workflow/<feature-key>/*.mmd
-  - metrics.md
-  - dependency.md (if changed)
-  - features/<feature-key>.md (Design Artifacts links ONLY)
+  ## Writes
+  - api/api.md, api/<service>.thrift or .proto
+  - storage.md, workflow/<key>/workflow.md, workflow/<key>/*.mmd
+  - metrics.md, dependency.md (if changed)
+  - features/<key>.md (Design Artifacts links, Status → DESIGNED)
 
-  **Important**: Does NOT write changelog or tasks.md (use other commands)
+  ## Workflow
 
-  ### AI Role
-  Ask questions, record answers, generate artifacts based on user decisions. Provide suggestions but user makes final decisions.
+  ### 1. Read Context
+  Read existing docs, use glossary.md for consistent naming
 
-  ### Correction Behavior
-  - If BLOCKED or NOT_REVIEWED → refuse, instruct `review` first
-  - If information incomplete → keep asking until complete
-  - If user uncertain → provide options but user decides
+  ### 2. Gather Architecture
+  Ask until clear: actors, dependencies, service, API needs, storage needs, constraints
+  Use glossary service/system names
+
+  ### 3. Design Workflow (Interactive)
+  Ask flow → generate diagrams → user approval
+
+  ### 4. Design API (Interactive)
+  Ask methods → generate IDL → user approval
+
+  ### 5. Design Storage (Interactive)
+  Ask tables → generate schema → user approval
+
+  ### 6. Design Metrics (Interactive)
+  Ask metrics → generate SLI/SLO → user approval
+
+  ### 7. Write After Approval
+  Write all artifacts, update features/<key>.md links, Status → DESIGNED
+
+  ## AI Role
+  Ask questions, record decisions, generate artifacts. User makes final decisions.
+
+  ## Correction Behavior
+  - Wrong status → STOP, instruct correct command
+  - Info incomplete → keep asking
+  - User uncertain → provide options

@@ -1,60 +1,28 @@
 title: Ask
-description: Let AI read relevant files to answer questions without modifying any files
+description: Answer questions by reading documentation (read-only)
 tags: [ask, question, answer, query]
 category: Archie
 content: |
-  Read documentation files and answer questions without modifying any files.
+  Read documentation files and answer questions. No file modifications.
 
   ## Reads
-
-  - Any relevant documentation files
-  - `background.md`, `features/<feature-key>.md`
-  - `dependency.md`, `blocker.md`
-  - `spec/<feature-key>.spec.md`, `workflow/<feature-key>/workflow.md`
-
-  ---
+  - Any relevant docs: background.md, glossary.md, features/*.md
+  - dependency.md, blocker.md, spec/*.md, workflow/*/
 
   ## Writes
+  - NONE (read-only)
 
-  - **NONE** (read-only operation)
+  ## Workflow
+  1. Understand question
+  2. Read relevant files
+  3. Answer with citations (file, section)
+  4. State if information missing
 
-  ---
-
-  ## Key Principles
-
-  - Read-only: no file modifications
-  - Answer based on existing content only
-  - Cite sources (file, section, line numbers)
-  - State limitations clearly
+  ## Core Rules
+  - Read-only: no modifications
+  - Answer from existing content only
+  - Cite sources
   - No speculative answers
 
-  ---
-
-  ## Prompt Skeleton
-
-  **Goal:** Answer user's questions based on existing documentation without modifying any files.
-
-  **Steps:**
-
-  1. Understand the question
-  2. Identify relevant files
-  3. Read and analyze content
-  4. Formulate answer with citations
-  5. State limitations if information missing
-
-  **Important Constraints:**
-  - DO NOT modify, create, or update any files
-  - DO NOT suggest changes to documentation
-  - Answer based ONLY on existing content
-  - If information is missing, state that clearly
-
-  ---
-
   ## Correction Behavior
-
-  If the user asks for modifications to files:
-  - Clearly state that this command is read-only
-  - Suggest using appropriate commands (`review`, `revise`, `design`, etc.) for modifications
-  - Do not perform any file operations
-
-  ---
+  If user asks for modifications → explain read-only, suggest correct command

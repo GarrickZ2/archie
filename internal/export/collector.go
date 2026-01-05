@@ -222,27 +222,16 @@ func (c *DocumentCollector) collectFeature(featureKey string) (*ExportedDocument
 		content.WriteString("\n")
 	}
 
-	// Dependencies
-	if len(detail.Upstreams) > 0 || len(detail.Downstreams) > 0 {
-		content.WriteString("### Dependencies\n\n")
-		if len(detail.Upstreams) > 0 {
-			content.WriteString("**Upstreams:**\n\n")
-			for name, reason := range detail.Upstreams {
-				if name != "" && name != "<dependency-name>" {
-					content.WriteString(fmt.Sprintf("- **%s**: %s\n", name, reason))
-				}
+	// Feature Dependencies
+	if len(detail.FeatureDependencies) > 0 {
+		content.WriteString("### Feature Dependencies\n\n")
+		content.WriteString("**Recommended features to be designed before this one:**\n\n")
+		for featureKey, reason := range detail.FeatureDependencies {
+			if featureKey != "" && featureKey != "<feature-key>" {
+				content.WriteString(fmt.Sprintf("- **%s**: %s\n", featureKey, reason))
 			}
-			content.WriteString("\n")
 		}
-		if len(detail.Downstreams) > 0 {
-			content.WriteString("**Downstreams:**\n\n")
-			for name, reason := range detail.Downstreams {
-				if name != "" && name != "<dependency-name>" {
-					content.WriteString(fmt.Sprintf("- **%s**: %s\n", name, reason))
-				}
-			}
-			content.WriteString("\n")
-		}
+		content.WriteString("\n")
 	}
 
 	return &ExportedDocument{

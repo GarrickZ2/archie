@@ -1,18 +1,18 @@
-# Workflow
+# Workflow: <feature-key>
 
-## By Feature
+## Overview
+<What this workflow covers - 1-2 sentences>
 
-### <feature-key>
+## Diagrams
+Optional, naming reflects function:
+- state.mmd - state machine
+- sequence.mmd - sequence diagram
+- flowchart.mmd - flowchart
 
-#### Overview
-[What this workflow covers]
+## Workflow Description
+<Description of each workflow step>
 
-#### Diagrams
-- Main: workflow/<feature-key>/main.mmd
-- State: workflow/<feature-key>/state.mmd (optional)
-- Sequence: workflow/<feature-key>/sequence.mmd (optional)
-
-#### Notes
-- Key invariants: [ ]
-- Failure paths: [ ]
-- Retry/idempotency notes: [ ]
+## Notes
+- Key invariants: <list>
+- Failure paths: <list>
+- Retry/idempotency: <notes>

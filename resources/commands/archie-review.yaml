@@ -3,78 +3,46 @@ description: Clarify business requirements and scope through user dialogue
 tags: [review, requirements, business]
 category: Archie
 content: |
-  ### Purpose
-  Clarify business requirements, scope, and logic through conversation with user.
-  Prepare feature for design phase without considering technical details.
+  Clarify business requirements, scope, and logic. Prepare feature for design phase.
 
-  ### Allowed Status
-  `NOT_REVIEWED`, `UNDER_REVIEW`, `BLOCKED`
+  ## Guard Check
+  - Status MUST be: `NOT_REVIEWED`, `UNDER_REVIEW`, `BLOCKED`
+  - Required: features/<key>.md exists
+  - If missing → instruct `revise --create`
 
-  ### Workflow
+  ## Reads
+  - background.md, glossary.md, features/<key>.md
 
-  #### 1. Understand Context
-  - Read: background.md (business context), features/<feature-key>.md
-  - Understand: What problem? Why solve it?
+  ## Writes
+  - features/<key>.md (Requirements, Scope, Feature Dependencies, Acceptance Criteria)
+  - blocker.md (if requirements unclear)
 
-  #### 2. Explore Business Requirements
-  Ask user about:
-  - Business goal and motivation
-  - Users and stakeholders
-  - Key use cases
-  - Problems being solved
-  - Success criteria (business outcomes)
+  ## Workflow
 
-  #### 3. Clarify Scope
-  Ask user about:
-  - What's in scope? Out of scope?
-  - Must-haves vs nice-to-haves?
-  - Constraints (business, compliance, timeline)?
-  - What are we NOT doing?
+  ### 1. Understand Context
+  Read background.md, glossary.md, features/<key>.md
+  Use glossary terms consistently
 
-  #### 4. Define Business Logic
-  Ask user to describe:
-  - Main business flow (user perspective)
-  - Edge cases (business handling)
-  - Business rules and decisions
-  - Failure scenarios (from user perspective)
+  ### 2. Explore Requirements
+  Ask: business goal, users, use cases, success criteria
 
-  #### 5. Summarize and Confirm
-  Present summary of gathered information:
-  - Business Goal
-  - Use Cases
-  - Functional Scope (in/out of scope)
-  - Business Logic (flow, rules, edge cases)
-  - Acceptance Criteria (business outcomes)
+  ### 3. Clarify Scope
+  Ask: in/out of scope, must-haves, constraints, feature dependencies
 
-  Ask user: "Should I write this to features/<feature-key>.md? Any final adjustments?"
+  ### 4. Define Business Logic
+  Ask: main flow, edge cases, business rules, failure scenarios
 
-  #### 6. Document After Approval
-  ONLY after explicit user approval:
-  - Write to features/<feature-key>.md (all sections above)
-  - Update status: READY_FOR_DESIGN (if complete)
-  - Update changelog: record completion of review
-  - Report completion summary
+  ### 5. User Approval
+  Present summary → ask confirmation
 
-  ### Reads
-  - background.md (business context only)
-  - features/<feature-key>.md
+  ### 6. Write After Approval
+  - Update features/<key>.md
+  - Status → READY_FOR_DESIGN
+  - Changelog entry
 
-  ### Writes
-  - features/<feature-key>.md (Requirements, Scope, Business Logic, Acceptance Criteria)
-  - blocker.md (if business requirements unclear)
+  ## Output Focus
+  Business-readable only. NO technical details (API, storage, services).
 
-  ### Output Focus
-  Business-readable documentation:
-  - Clear functional scope
-  - Business logic and flow
-  - User-centric use cases
-
-  NOT technical details:
-  - No API/RPC definitions
-  - No storage schema
-  - No technical dependencies
-  - No service selection
-
-  ### Correction Behavior
-  - If feature file missing → instruct `revise --create`
-  - If business requirements fundamentally unclear → create blocker, status BLOCKED
+  ## Correction Behavior
+  - Feature missing → `revise --create`
+  - Requirements unclear → create blocker, status BLOCKED

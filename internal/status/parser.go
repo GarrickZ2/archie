@@ -42,12 +42,13 @@ var AllStatuses = []FeatureStatus{
 
 // Feature 表示一个 feature 及其状态信息
 type Feature struct {
-	Name        string
-	Status      FeatureStatus
-	Owner       string
-	LastUpdated string
-	Reason      string
-	FilePath    string
+	Name         string
+	Status       FeatureStatus
+	Owner        string
+	LastUpdated  string
+	Reason       string
+	FilePath     string
+	Dependencies map[string]string // feature-key -> reason
 }
 
 // Parser 解析 feature 文件
@@ -115,9 +116,10 @@ func (p *Parser) ParseFeaturesDir(projectPath string) ([]Feature, error) {
 // ParseFeatureFile 解析单个 feature 文件
 func (p *Parser) ParseFeatureFile(filePath string) (Feature, error) {
 	feature := Feature{
-		FilePath: filePath,
-		Name:     strings.TrimSuffix(filepath.Base(filePath), ".md"),
-		Status:   StatusUnknown,
+		FilePath:     filePath,
+		Name:         strings.TrimSuffix(filepath.Base(filePath), ".md"),
+		Status:       StatusUnknown,
+		Dependencies: make(map[string]string),
 	}
 
 	file, err := p.fs.Open(filePath)
@@ -128,6 +130,7 @@ func (p *Parser) ParseFeatureFile(filePath string) (Feature, error) {
 
 	scanner := bufio.NewScanner(file)
 	inStatusSection := false
+	inDependenciesSection := false
 
 	// 正则表达式匹配 Status section 中的字段
 	statusRegex := regexp.MustCompile(`^-\s*Value:\s*(.+)$`)
@@ -135,18 +138,31 @@ func (p *Parser) ParseFeatureFile(filePath string) (Feature, error) {
 	dateRegex := regexp.MustCompile(`^-\s*Last Updated:\s*(.*)$`)
 	reasonRegex := regexp.MustCompile(`^-\s*Reason:\s*(.*)$`)
 
+	// 匹配 Feature Dependencies: - `feature-key`: [Reason]
+	dependencyRegex := regexp.MustCompile(`^-\s*` + "`" + `([^` + "`" + `]+)` + "`" + `\s*:\s*(.*)$`)
+
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 
 		// 检测 ## Status section
 		if strings.HasPrefix(line, "## Status") {
 			inStatusSection = true
+			inDependenciesSection = false
 			continue
 		}
 
-		// 如果遇到下一个 section，停止解析
-		if inStatusSection && strings.HasPrefix(line, "##") {
-			break
+		// 检测 ## Feature Dependencies section
+		if strings.HasPrefix(line, "## Feature Dependencies") {
+			inStatusSection = false
+			inDependenciesSection = true
+			continue
+		}
+
+		// 如果遇到下一个 section，停止解析当前 section
+		if strings.HasPrefix(line, "##") {
+			inStatusSection = false
+			inDependenciesSection = false
+			continue
 		}
 
 		// 在 Status section 中解析字段
@@ -159,6 +175,18 @@ func (p *Parser) ParseFeatureFile(filePath string) (Feature, error) {
 				feature.LastUpdated = strings.TrimSpace(matches[1])
 			} else if matches := reasonRegex.FindStringSubmatch(line); len(matches) > 1 {
 				feature.Reason = strings.TrimSpace(matches[1])
+			}
+		}
+
+		// 在 Feature Dependencies section 中解析依赖
+		if inDependenciesSection {
+			if matches := dependencyRegex.FindStringSubmatch(line); len(matches) > 2 {
+				featureKey := strings.TrimSpace(matches[1])
+				reason := strings.TrimSpace(matches[2])
+				// 过滤掉模板占位符
+				if featureKey != "<feature-key>" && featureKey != "" {
+					feature.Dependencies[featureKey] = reason
+				}
 			}
 		}
 	}

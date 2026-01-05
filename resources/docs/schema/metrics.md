@@ -1,16 +1,15 @@
 # Metrics
 
-## By Feature
+## <feature-key>
 
-### <feature-key>
-
-#### SLI: <name>
-- Description:
-- Definition:
-- Target:
-- Window:
-- Owner:
-- Dashboard:
-- Alert:
-- Runbook:
-- Notes:
+### SLI: <name>
+| Field | Value |
+|-------|-------|
+| Description | <what it measures> |
+| Definition | <calculation> |
+| Target | <SLO value> |
+| Window | <time window> |
+| Owner | <team/person> |
+| Dashboard | <link> |
+| Alert | <threshold> |
+| Runbook | <link> |

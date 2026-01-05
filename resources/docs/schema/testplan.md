@@ -1,22 +1,18 @@
-# <feature-key>
+# Test Plan: <feature-key>
 
-## Test Cases
+## Unit Tests
+- [ ] <key>-U-001: <description> (P0) → <source reference>
+  - Expected: <result>
 
-### Unit Tests
+## Integration Tests
+- [ ] <key>-I-001: <description> (P0) → <source reference>
+  - Expected: <result>
 
-- [ ] <feature-key>-U-001: <test description> (P0) → workflow/<feature-key>/main.mmd#step
-  - Expected: <brief expected result>
-
-### Integration Tests
-
-- [ ] <feature-key>-I-001: <test description> (P0) → spec/<feature-key>.spec.md#section
-  - Expected: <brief expected result>
-
-### E2E Tests
-
-- [ ] <feature-key>-E-001: <test description> (P0) → workflow/<feature-key>/main.mmd
-  - Expected: <brief expected result>
+## E2E Tests
+- [ ] <key>-E-001: <description> (P0) → <source reference>
+  - Expected: <result>
 
 ## Failure Scenarios
-
-- FS-001: <brief failure description> → Covered by: <feature-key>-I-001, <feature-key>-U-005
+| ID | Description | Covered by |
+|----|-------------|------------|
+| FS-001 | <failure> | <test IDs> |

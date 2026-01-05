@@ -315,8 +315,8 @@ func showOverallStatus(projectPath string) error {
 	aggregator := status.NewAggregator(features)
 	summary := aggregator.Aggregate()
 
-	// Display status report
-	display := status.NewDisplay(summary)
+	// Display status report with dependency graph
+	display := status.NewDisplayWithFeatures(summary, features)
 
 	if compactFlag {
 		display.ShowCompact()

@@ -14,9 +14,8 @@ type DependencyGraphGenerator struct {
 
 // DependencyNode represents a node in the dependency graph
 type DependencyNode struct {
-	Key         string
-	Upstreams   []string
-	Downstreams []string
+	Key          string
+	Dependencies []string // Features that this feature depends on
 }
 
 // NewDependencyGraphGenerator creates a new dependency graph generator
@@ -68,27 +67,19 @@ func (g *DependencyGraphGenerator) buildGraph() map[string]*DependencyNode {
 	// Build nodes from features
 	for _, feature := range g.features {
 		node := &DependencyNode{
-			Key:         feature.Key,
-			Upstreams:   []string{},
-			Downstreams: []string{},
+			Key:          feature.Key,
+			Dependencies: []string{},
 		}
 
-		// Add upstreams
-		for upstream := range feature.Upstreams {
-			if upstream != "" && upstream != "<dependency-name>" {
-				node.Upstreams = append(node.Upstreams, upstream)
-			}
-		}
-
-		// Add downstreams
-		for downstream := range feature.Downstreams {
-			if downstream != "" && downstream != "<dependency-name>" {
-				node.Downstreams = append(node.Downstreams, downstream)
+		// Add feature dependencies
+		for depKey := range feature.FeatureDependencies {
+			if depKey != "" && depKey != "<feature-key>" {
+				node.Dependencies = append(node.Dependencies, depKey)
 			}
 		}
 
 		// Only add to graph if it has dependencies
-		if len(node.Upstreams) > 0 || len(node.Downstreams) > 0 {
+		if len(node.Dependencies) > 0 {
 			graph[feature.Key] = node
 		}
 	}
@@ -108,18 +99,11 @@ func (g *DependencyGraphGenerator) formatMermaid(graph map[string]*DependencyNod
 		// Format feature key for Mermaid (replace hyphens with underscores)
 		featureID := strings.ReplaceAll(key, "-", "_")
 
-		// Add upstream dependencies
-		for _, upstream := range node.Upstreams {
-			upstreamID := strings.ReplaceAll(upstream, "-", "_")
+		// Add dependencies: dependency -> this feature (arrow points to dependent)
+		for _, dependency := range node.Dependencies {
+			dependencyID := strings.ReplaceAll(dependency, "-", "_")
 			content.WriteString(fmt.Sprintf("    %s[\"%s\"] --> %s[\"%s\"]\n",
-				featureID, key, upstreamID, upstream))
-		}
-
-		// Add downstream dependencies
-		for _, downstream := range node.Downstreams {
-			downstreamID := strings.ReplaceAll(downstream, "-", "_")
-			content.WriteString(fmt.Sprintf("    %s[\"%s\"] --> %s[\"%s\"]\n",
-				downstreamID, downstream, featureID, key))
+				dependencyID, dependency, featureID, key))
 		}
 	}
 

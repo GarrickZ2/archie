@@ -34,9 +34,8 @@ type FeatureDetail struct {
 	Requirements    []string
 	NonRequirements []string
 
-	// Dependencies
-	Upstreams   map[string]string // dependency -> reason
-	Downstreams map[string]string
+	// Feature Dependencies (features that should be designed before this one)
+	FeatureDependencies map[string]string // feature-key -> reason
 
 	// Acceptance Criteria
 	AcceptanceCriteria []string
@@ -89,11 +88,10 @@ func (p *DetailParser) ParseFeatureDetail(projectPath, featureKey string) (*Feat
 	}
 
 	detail := &FeatureDetail{
-		Key:         featureKey,
-		FilePath:    filePath,
-		Status:      StatusUnknown,
-		Upstreams:   make(map[string]string),
-		Downstreams: make(map[string]string),
+		Key:                 featureKey,
+		FilePath:            filePath,
+		Status:              StatusUnknown,
+		FeatureDependencies: make(map[string]string),
 	}
 
 	file, err := p.fs.Open(filePath)
@@ -155,8 +153,8 @@ func (p *DetailParser) parseSectionContent(detail *FeatureDetail, section, subSe
 		if strings.HasPrefix(line, "- NR") || strings.HasPrefix(line, "-") {
 			detail.NonRequirements = append(detail.NonRequirements, strings.TrimPrefix(line, "- "))
 		}
-	case "Dependencies":
-		p.parseDependenciesSection(detail, subSection, line)
+	case "Feature Dependencies":
+		p.parseFeatureDependenciesSection(detail, line)
 	case "Acceptance Criteria":
 		if strings.HasPrefix(line, "- AC") || strings.HasPrefix(line, "-") {
 			detail.AcceptanceCriteria = append(detail.AcceptanceCriteria, strings.TrimPrefix(line, "- "))
@@ -216,25 +214,40 @@ func (p *DetailParser) parseScopeSection(detail *FeatureDetail, subSection, line
 	}
 }
 
-// parseDependenciesSection 解析 Dependencies section
-func (p *DetailParser) parseDependenciesSection(detail *FeatureDetail, subSection, line string) {
+// parseFeatureDependenciesSection 解析 Feature Dependencies section
+// Format: - `feature-key`: [Reason]
+func (p *DetailParser) parseFeatureDependenciesSection(detail *FeatureDetail, line string) {
 	if !strings.HasPrefix(line, "- ") {
 		return
 	}
 
+	// 提取反引号包裹的 feature-key
 	item := strings.TrimPrefix(line, "- ")
-	parts := strings.SplitN(item, ":", 2)
-	if len(parts) != 2 {
+
+	// 查找第一个反引号对
+	start := strings.Index(item, "`")
+	if start == -1 {
 		return
 	}
 
-	name := strings.TrimSpace(parts[0])
-	reason := strings.TrimSpace(parts[1])
+	end := strings.Index(item[start+1:], "`")
+	if end == -1 {
+		return
+	}
 
-	if subSection == "Upstreams" {
-		detail.Upstreams[name] = reason
-	} else if subSection == "Downstreams" {
-		detail.Downstreams[name] = reason
+	featureKey := item[start+1 : start+1+end]
+
+	// 查找冒号后的原因
+	colonIdx := strings.Index(item[start+1+end:], ":")
+	if colonIdx == -1 {
+		return
+	}
+
+	reason := strings.TrimSpace(item[start+1+end+colonIdx+1:])
+
+	// 过滤模板占位符
+	if featureKey != "<feature-key>" && featureKey != "" {
+		detail.FeatureDependencies[featureKey] = reason
 	}
 }
 
@@ -303,9 +316,9 @@ func (d *DetailDisplay) Show() {
 		d.showNonRequirements()
 	}
 
-	if len(d.detail.Upstreams) > 0 || len(d.detail.Downstreams) > 0 {
+	if len(d.detail.FeatureDependencies) > 0 {
 		fmt.Println()
-		d.showDependencies()
+		d.showFeatureDependencies()
 	}
 
 	if len(d.detail.AcceptanceCriteria) > 0 {
@@ -472,27 +485,15 @@ func (d *DetailDisplay) showNonRequirements() {
 	}
 }
 
-// showDependencies 显示依赖关系
-func (d *DetailDisplay) showDependencies() {
-	fmt.Println(ColorBold + "  🔗 Dependencies" + ColorReset)
+// showFeatureDependencies 显示 feature 依赖关系
+func (d *DetailDisplay) showFeatureDependencies() {
+	fmt.Println(ColorBold + "  🔗 Feature Dependencies" + ColorReset)
+	fmt.Println(ColorDim + "  (Recommended features to be designed before this one)" + ColorReset)
 	fmt.Println()
 
-	if len(d.detail.Upstreams) > 0 {
-		fmt.Println(ColorBlue + "  ⬆️  Upstreams:" + ColorReset)
-		for name, reason := range d.detail.Upstreams {
-			if name != "" && name != "<dependency-name>" {
-				fmt.Printf("    • %s%s%s: %s\n", ColorBold, name, ColorReset, reason)
-			}
-		}
-		fmt.Println()
-	}
-
-	if len(d.detail.Downstreams) > 0 {
-		fmt.Println(ColorYellow + "  ⬇️  Downstreams:" + ColorReset)
-		for name, reason := range d.detail.Downstreams {
-			if name != "" && name != "<dependency-name>" {
-				fmt.Printf("    • %s%s%s: %s\n", ColorBold, name, ColorReset, reason)
-			}
+	if len(d.detail.FeatureDependencies) > 0 {
+		for featureKey, reason := range d.detail.FeatureDependencies {
+			fmt.Printf("    • %s%s%s: %s\n", ColorBold, featureKey, ColorReset, reason)
 		}
 	}
 }
