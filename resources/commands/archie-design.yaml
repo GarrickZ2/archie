@@ -30,7 +30,11 @@ content: |
   Use glossary service/system names
 
   ### 3. Design Workflow (Interactive)
-  Ask flow → generate diagrams → user approval
+  Ask flow → generate diagrams → validate syntax → user approval
+
+  **Required Diagrams**:
+  - `workflow/<key>/flowchart.mmd`: Overall flow with decision points, happy/error paths
+  - `workflow/<key>/sequence.mmd`: Component interactions with message flow
 
   ### 4. Design API (Interactive)
   Ask methods → generate IDL → user approval
@@ -51,3 +55,4 @@ content: |
   - Wrong status → STOP, instruct correct command
   - Info incomplete → keep asking
   - User uncertain → provide options
+  - Diagram syntax errors → fix before showing to user

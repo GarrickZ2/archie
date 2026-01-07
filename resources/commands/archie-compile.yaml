@@ -1,0 +1,90 @@
+title: Compile
+description: Review tech design from multiple aspects and generate readable doc
+tags: [review, compile, documentation]
+category: Archie
+content: |
+  Review current tech design from multiple aspects and compile into a single readable markdown document.
+
+  ## Guard Check
+  - Status MUST be: `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
+  - Required: features/<key>.md exists
+  - If status is earlier → STOP, instruct complete design first
+
+  ## Reads
+  - features/<key>.md
+  - workflow/<key>/workflow.md, workflow/<key>/*.mmd
+  - api/api.md, api/*.thrift, api/*.proto
+  - storage.md, metrics.md, dependency.md
+  - spec/<key>.spec.md (if exists)
+  - background.md, glossary.md
+
+  ## Writes
+  - assets/exports/design-<key>-<YYYY-MM-DD>.md (compiled tech design doc)
+
+  ## Workflow
+
+  ### 1. Read All Design Artifacts
+  Read all available design documents for the feature
+  Check which artifacts exist: feature, workflow, API, storage, metrics, spec
+
+  ### 2. Check Completeness
+  Identify any incompleteness, blockers, or gaps:
+  - Missing required artifacts (workflow, API, storage, etc.)
+  - Incomplete or unclear sections
+  - Unresolved blockers from blocker.md
+  - Inconsistencies between documents
+
+  ### 3. Generate Compiled Document
+  Create a single markdown document with structure:
+
+  ```
+  # Tech Design: <Feature Title>
+
+  ## Overview
+  [Feature summary, business goal, scope from features/<key>.md]
+
+  ## Requirements
+  [Business requirements, acceptance criteria from features/<key>.md]
+
+  ## Workflow Design
+  [From workflow/<key>/workflow.md, include diagrams if present]
+
+  ## API Design
+  [From api/api.md and *.thrift/*.proto]
+
+  ## Data Model
+  [From storage.md]
+
+  ## Metrics & Observability
+  [From metrics.md]
+
+  ## Dependencies
+  [From dependency.md]
+
+  ## Known Issues (Optional)
+  [Include only if user confirms - list incompleteness, blockers, gaps]
+  ```
+
+  ### 4. User Approval
+  Show document structure to user
+
+  If incompleteness/blockers/gaps found:
+  - List them clearly
+  - Ask: "Do you want to include a 'Known Issues' section to document these?"
+  - If yes → add section, if no → omit section
+
+  Ask confirmation → apply feedback if needed
+
+  ### 5. Write After Approval
+  Write to assets/exports/design-<key>-<YYYY-MM-DD>.md
+
+  ## Core Rules
+  - Document must be self-contained and readable by general audience
+  - Include all diagrams inline (preserve .mmd content or convert to readable format)
+  - Preserve original content without adding commentary or analysis
+  - Use tables for structured data
+  - Present information cleanly, focus on what is designed, not evaluation
+  - Known Issues section is optional, only include if user confirms
+
+  ## Output Focus
+  Generate a clean, presentation-ready tech design document for stakeholders including engineers, architects, product managers, and leadership.
