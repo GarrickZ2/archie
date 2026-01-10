@@ -1,90 +1,118 @@
 title: Compile
-description: Review tech design from multiple aspects and generate readable doc
-tags: [review, compile, documentation]
+description: Reformat tech design into human-readable documentation
+tags: [export, documentation, readable]
 category: Archie
 content: |
-  Review current tech design from multiple aspects and compile into a single readable markdown document.
+  Reformat tech design into a clear, human-readable document. Prioritize readability over completeness.
 
   ## Guard Check
-  - Status MUST be: `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, `FINISHED`
-  - Required: features/<key>.md exists
-  - If status is earlier → STOP, instruct complete design first
+  - At least one feature with status: `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, or `FINISHED`
+  - Required design artifacts exist (features/, workflow/, etc.)
+  - If no designed features → STOP, instruct complete design first
 
   ## Reads
-  - features/<key>.md
-  - workflow/<key>/workflow.md, workflow/<key>/*.mmd
-  - api/api.md, api/*.thrift, api/*.proto
-  - storage.md, metrics.md, dependency.md
-  - spec/<key>.spec.md (if exists)
-  - background.md, glossary.md
+  - All relevant design artifacts: features/, workflow/, api/, storage.md, metrics.md, dependency.md
+  - background.md, glossary.md for context
 
   ## Writes
-  - assets/exports/design-<key>-<YYYY-MM-DD>.md (compiled tech design doc)
+  - assets/exports/tech-design-<YYYY-MM-DD>.md (human-readable doc)
 
   ## Workflow
 
-  ### 1. Read All Design Artifacts
-  Read all available design documents for the feature
-  Check which artifacts exist: feature, workflow, API, storage, metrics, spec
+  ### 1. Read Design Artifacts
+  Read available design documents
+  Understand context from background.md and glossary.md
 
-  ### 2. Check Completeness
-  Identify any incompleteness, blockers, or gaps:
-  - Missing required artifacts (workflow, API, storage, etc.)
-  - Incomplete or unclear sections
-  - Unresolved blockers from blocker.md
-  - Inconsistencies between documents
+  ### 2. Understand and Synthesize
+  - Identify key information across documents
+  - Understand relationships between components
+  - Note any gaps or blockers
 
-  ### 3. Generate Compiled Document
-  Create a single markdown document with structure:
+  ### 3. Reformat for Human Readers
+  **Critical: Do NOT just copy-paste content**
+
+  Reformat into professional technical design with clear explanations:
+  - Use standard technical document structure
+  - Explain technical decisions with context
+  - Define terms clearly (reference glossary)
+  - Provide brief explanations where needed
+  - Keep professional tone, avoid jargon dumping
+  - Ensure diagrams have clear labels and captions
+
+  Standard technical design structure:
 
   ```
-  # Tech Design: <Feature Title>
+  # Technical Design Document
 
   ## Overview
-  [Feature summary, business goal, scope from features/<key>.md]
+  **Purpose**: [What problem does this solve?]
+  **Scope**: [What's included/excluded]
+  **Status**: [Current design status]
 
   ## Requirements
-  [Business requirements, acceptance criteria from features/<key>.md]
+  [Key functional and non-functional requirements]
+  [Acceptance criteria]
 
-  ## Workflow Design
-  [From workflow/<key>/workflow.md, include diagrams if present]
+  ## Architecture
+  [System components and their responsibilities]
+  [Component diagram or description]
+  [Integration points]
+
+  ## Workflow
+  [Process flows with clear step descriptions]
+  [Include flowchart and sequence diagrams]
+  [Happy path and error scenarios]
 
   ## API Design
-  [From api/api.md and *.thrift/*.proto]
+  [Service interfaces]
+  [Key endpoints/methods with descriptions]
+  [Request/response formats]
 
   ## Data Model
-  [From storage.md]
+  [Storage schema]
+  [Key entities and relationships]
+  [Data access patterns]
 
-  ## Metrics & Observability
-  [From metrics.md]
+  ## Metrics & Monitoring
+  [Success metrics]
+  [SLIs/SLOs]
+  [Monitoring strategy]
 
   ## Dependencies
-  [From dependency.md]
+  [External systems and services]
+  [Integration requirements]
 
-  ## Known Issues (Optional)
-  [Include only if user confirms - list incompleteness, blockers, gaps]
+  ## Open Questions (Optional)
+  [Unresolved technical decisions]
+  [Known gaps or blockers]
   ```
 
   ### 4. User Approval
-  Show document structure to user
+  Present document outline and approach
 
-  If incompleteness/blockers/gaps found:
-  - List them clearly
-  - Ask: "Do you want to include a 'Known Issues' section to document these?"
-  - If yes → add section, if no → omit section
+  If gaps/blockers found, ask: "Include 'Open Questions' section?"
 
-  Ask confirmation → apply feedback if needed
+  Confirm document is readable and clear before writing
 
   ### 5. Write After Approval
-  Write to assets/exports/design-<key>-<YYYY-MM-DD>.md
+  Write to assets/exports/tech-design-<YYYY-MM-DD>.md
 
-  ## Core Rules
-  - Document must be self-contained and readable by general audience
-  - Include all diagrams inline (preserve .mmd content or convert to readable format)
-  - Preserve original content without adding commentary or analysis
-  - Use tables for structured data
-  - Present information cleanly, focus on what is designed, not evaluation
-  - Known Issues section is optional, only include if user confirms
+  ## Core Rules: Professional and Readable
+
+  **DO**:
+  - Use standard technical design document structure
+  - Provide context and explanations for technical decisions
+  - Define terms clearly (reference glossary consistently)
+  - Use tables, diagrams, and structured formats appropriately
+  - Write concisely but completely
+  - Ensure technical accuracy while maintaining clarity
+
+  **DO NOT**:
+  - Copy-paste raw content without reformatting
+  - Use unexplained acronyms or internal jargon
+  - Include code snippets without explanation
+  - Assume reader has full project context
+  - Present information without logical flow
 
   ## Output Focus
-  Generate a clean, presentation-ready tech design document for stakeholders including engineers, architects, product managers, and leadership.
+  Professional technical design document that engineers, architects, and technical stakeholders can review and understand without needing to read the entire codebase.
