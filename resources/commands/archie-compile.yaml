@@ -1,0 +1,118 @@
+title: Compile
+description: Reformat tech design into human-readable documentation
+tags: [export, documentation, readable]
+category: Archie
+content: |
+  Reformat tech design into a clear, human-readable document. Prioritize readability over completeness.
+
+  ## Guard Check
+  - At least one feature with status: `DESIGNED`, `SPEC_READY`, `IMPLEMENTING`, or `FINISHED`
+  - Required design artifacts exist (features/, workflow/, etc.)
+  - If no designed features → STOP, instruct complete design first
+
+  ## Reads
+  - All relevant design artifacts: features/, workflow/, api/, storage.md, metrics.md, dependency.md
+  - background.md, glossary.md for context
+
+  ## Writes
+  - assets/exports/tech-design-<YYYY-MM-DD>.md (human-readable doc)
+
+  ## Workflow
+
+  ### 1. Read Design Artifacts
+  Read available design documents
+  Understand context from background.md and glossary.md
+
+  ### 2. Understand and Synthesize
+  - Identify key information across documents
+  - Understand relationships between components
+  - Note any gaps or blockers
+
+  ### 3. Reformat for Human Readers
+  **Critical: Do NOT just copy-paste content**
+
+  Reformat into professional technical design with clear explanations:
+  - Use standard technical document structure
+  - Explain technical decisions with context
+  - Define terms clearly (reference glossary)
+  - Provide brief explanations where needed
+  - Keep professional tone, avoid jargon dumping
+  - Ensure diagrams have clear labels and captions
+
+  Standard technical design structure:
+
+  ```
+  # Technical Design Document
+
+  ## Overview
+  **Purpose**: [What problem does this solve?]
+  **Scope**: [What's included/excluded]
+  **Status**: [Current design status]
+
+  ## Requirements
+  [Key functional and non-functional requirements]
+  [Acceptance criteria]
+
+  ## Architecture
+  [System components and their responsibilities]
+  [Component diagram or description]
+  [Integration points]
+
+  ## Workflow
+  [Process flows with clear step descriptions]
+  [Include flowchart and sequence diagrams]
+  [Happy path and error scenarios]
+
+  ## API Design
+  [Service interfaces]
+  [Key endpoints/methods with descriptions]
+  [Request/response formats]
+
+  ## Data Model
+  [Storage schema]
+  [Key entities and relationships]
+  [Data access patterns]
+
+  ## Metrics & Monitoring
+  [Success metrics]
+  [SLIs/SLOs]
+  [Monitoring strategy]
+
+  ## Dependencies
+  [External systems and services]
+  [Integration requirements]
+
+  ## Open Questions (Optional)
+  [Unresolved technical decisions]
+  [Known gaps or blockers]
+  ```
+
+  ### 4. User Approval
+  Present document outline and approach
+
+  If gaps/blockers found, ask: "Include 'Open Questions' section?"
+
+  Confirm document is readable and clear before writing
+
+  ### 5. Write After Approval
+  Write to assets/exports/tech-design-<YYYY-MM-DD>.md
+
+  ## Core Rules: Professional and Readable
+
+  **DO**:
+  - Use standard technical design document structure
+  - Provide context and explanations for technical decisions
+  - Define terms clearly (reference glossary consistently)
+  - Use tables, diagrams, and structured formats appropriately
+  - Write concisely but completely
+  - Ensure technical accuracy while maintaining clarity
+
+  **DO NOT**:
+  - Copy-paste raw content without reformatting
+  - Use unexplained acronyms or internal jargon
+  - Include code snippets without explanation
+  - Assume reader has full project context
+  - Present information without logical flow
+
+  ## Output Focus
+  Professional technical design document that engineers, architects, and technical stakeholders can review and understand without needing to read the entire codebase.
